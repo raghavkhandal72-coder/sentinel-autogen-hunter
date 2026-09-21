@@ -1,0 +1,182 @@
+"""Model Context Protocol (MCP) Server for Sentinel-AutoGen-Hunter.
+
+Exposes security tools to Microsoft Security Copilot, AutoGen, and external LLMs:
+- check_ip_reputation: Real-time AbuseIPDB threat intelligence
+- queue_firewall_containment: Zero-trust DOCKER-USER firewall enforcement
+- send_teams_alert: Microsoft Teams Adaptive Card dispatch
+- stream_to_sentinel: Azure Log Analytics / Sentinel ingestion
+"""
+
+import json
+import logging
+import sys
+from typing import Any
+
+from agents.tools.linux_cmd import execute_firewall_rule
+from agents.tools.notifier import send_teams_alert
+from agents.tools.sentinel_connector import push_to_sentinel
+from agents.tools.threat_intel import check_ip_reputation
+
+logger = logging.getLogger("HunterMCPServer")
+
+
+class HunterMCPServer:
+    """Production MCP server implementing tool discovery and invocation."""
+
+    @staticmethod
+    def get_tools_manifest() -> list[dict[str, Any]]:
+        """Returns the MCP tool definitions conforming to the Model Context Protocol."""
+        return [
+            {
+                "name": "check_ip_reputation",
+                "description": "Queries global threat intelligence (AbuseIPDB) to score an IP address.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "ip_address": {
+                            "type": "string",
+                            "description": "The IPv4 address to inspect",
+                        }
+                    },
+                    "required": ["ip_address"],
+                },
+            },
+            {
+                "name": "queue_firewall_containment",
+                "description": "Safely enqueues an iptables DOCKER-USER containment rule for host enforcement.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "ip_to_block": {
+                            "type": "string",
+                            "description": "The attacker IPv4 address to isolate",
+                        },
+                        "proposed_command": {
+                            "type": "string",
+                            "description": "The specific iptables rule command",
+                        },
+                        "risk_level": {
+                            "type": "string",
+                            "enum": ["low", "medium", "high", "critical"],
+                            "default": "high",
+                        },
+                    },
+                    "required": ["ip_to_block", "proposed_command"],
+                },
+            },
+            {
+                "name": "send_teams_alert",
+                "description": "Dispatches an enterprise Adaptive Card security incident alert to Microsoft Teams.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "threat_type": {"type": "string"},
+                        "attacker_ip": {"type": "string"},
+                        "recommended_action": {"type": "string"},
+                        "risk_level": {"type": "string", "default": "High"},
+                    },
+                    "required": ["threat_type", "attacker_ip", "recommended_action"],
+                },
+            },
+            {
+                "name": "stream_to_sentinel",
+                "description": "Streams autonomous threat detection and KQL telemetry into Microsoft Sentinel.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "threat_event": {
+                            "type": "object",
+                            "description": "Structured telemetry payload including MITRE tactics and KQL",
+                        }
+                    },
+                    "required": ["threat_event"],
+                },
+            },
+        ]
+
+    @staticmethod
+    def call_tool(tool_name: str, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Dispatches an MCP tool invocation to the corresponding tool handler."""
+        try:
+            if tool_name == "check_ip_reputation":
+                ip = arguments.get("ip_address", "")
+                return check_ip_reputation(ip)
+
+            elif tool_name == "queue_firewall_containment":
+                ip = arguments.get("ip_to_block", "")
+                cmd = arguments.get("proposed_command", "")
+                risk = arguments.get("risk_level", "high")
+                success = execute_firewall_rule(cmd, ip, risk)
+                return {"success": success, "ip_blocked": ip, "risk_level": risk}
+
+            elif tool_name == "send_teams_alert":
+                success = send_teams_alert(
+                    threat_type=arguments.get("threat_type", "Unknown"),
+                    attacker_ip=arguments.get("attacker_ip", "0.0.0.0"),
+                    recommended_action=arguments.get("recommended_action", ""),
+                    risk_level=arguments.get("risk_level", "High"),
+                )
+                return {"success": success}
+
+            elif tool_name == "stream_to_sentinel":
+                event = arguments.get("threat_event", {})
+                success = push_to_sentinel(event)
+                return {"success": success}
+
+            else:
+                return {"error": f"Unknown MCP tool: {tool_name}"}
+
+        except Exception as exc:
+            logger.error(f"Error invoking MCP tool {tool_name}: {exc}")
+            return {"error": str(exc), "success": False}
+
+
+def run_stdio_server():
+    """Starts the standard IO JSON-RPC loop for MCP integration."""
+    server = HunterMCPServer()
+    for line in sys.stdin:
+        if not line.strip():
+            continue
+        try:
+            request = json.loads(line)
+            req_type = request.get("method")
+            req_id = request.get("id")
+
+            if req_type == "tools/list":
+                response = {
+                    "jsonrpc": "2.0",
+                    "id": req_id,
+                    "result": {"tools": server.get_tools_manifest()},
+                }
+            elif req_type == "tools/call":
+                params = request.get("params", {})
+                tool_name = params.get("name")
+                arguments = params.get("arguments", {})
+                tool_result = server.call_tool(tool_name, arguments)
+                response = {
+                    "jsonrpc": "2.0",
+                    "id": req_id,
+                    "result": {
+                        "content": [{"type": "text", "text": json.dumps(tool_result)}]
+                    },
+                }
+            else:
+                response = {
+                    "jsonrpc": "2.0",
+                    "id": req_id,
+                    "error": {"code": -32601, "message": "Method not found"},
+                }
+
+            sys.stdout.write(json.dumps(response) + "\n")
+            sys.stdout.flush()
+        except Exception as exc:
+            err_resp = {
+                "jsonrpc": "2.0",
+                "error": {"code": -32603, "message": str(exc)},
+            }
+            sys.stdout.write(json.dumps(err_resp) + "\n")
+            sys.stdout.flush()
+
+
+if __name__ == "__main__":
+    run_stdio_server()

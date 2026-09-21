@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sentinel-autogen-hunter"
+version = "1.0.0"
+description = "Cloud-Native Autonomous Threat Hunter powered by Microsoft AutoGen and Microsoft Sentinel"
+readme = "README.md"
+authors = [{ name = "Threat Hunter Core Team" }]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.103.0",
+    "uvicorn>=0.23.0",
+    "pydantic>=2.3.0",
+    "requests>=2.31.0",
+    "prometheus-client>=0.17.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "flake8>=6.0.0",
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "asyncio: mark a test as an asyncio test."
+]
+

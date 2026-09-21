@@ -1,0 +1,109 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 0 },
+      "id": 1,
+      "title": "Total Mitigated Threats (AI Verified)",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(ai_threats_detected_total) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 1 },
+              { "color": "red", "value": 5 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 6, "w": 8, "x": 8, "y": 0 },
+      "id": 2,
+      "title": "Current AI Threat Confidence Dial",
+      "type": "gauge",
+      "targets": [
+        {
+          "expr": "ai_threat_confidence_score * 100",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 100,
+          "unit": "percent",
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "blue", "value": null },
+              { "color": "green", "value": 30 },
+              { "color": "orange", "value": 70 },
+              { "color": "red", "value": 85 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 6, "w": 8, "x": 16, "y": 0 },
+      "id": 3,
+      "title": "Host Firewall Dispatches (DOCKER-USER)",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(threat_remediations_queued_total{status='queued'}) or vector(0)",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" }
+        }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 6 },
+      "id": 4,
+      "title": "Real-Time Ingestion Velocity & Attack Spikes (per min)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(ssh_login_attempts_total[1m]) * 60",
+          "legendFormat": "Login Attempts/min",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(ai_threats_detected_total[1m]) * 60",
+          "legendFormat": "AI Threat Detections/min",
+          "refId": "B"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["soc", "sentinel", "autogen", "ai-security"],
+  "time": { "from": "now-15m", "to": "now" },
+  "title": "Sentinel-AutoGen-Hunter SOC Dashboard"
+}

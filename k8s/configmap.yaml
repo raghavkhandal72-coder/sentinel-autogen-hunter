@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sentinel-hunter-config
+  namespace: secops
+data:
+  HUNTER_MODE: "live"
+  LLM_MODEL: "gpt-4o"
+  SENTINEL_LOG_TYPE: "AutoGenThreatHunt_CL"
+  LOG_LEVEL: "INFO"
