@@ -3,7 +3,9 @@
 # 🛡️ Sentinel-AutoGen-Hunter
 ### **Cloud-Native Autonomous Threat Hunter powered by Microsoft AutoGen, Sentinel & MCP**
 
-[![CI Build](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge&logo=github-actions)](https://github.com)
+[![CI Build](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge&logo=github-actions)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/actions)
+[![GitHub Stars](https://img.shields.io/github/stars/raghavkhandal72-coder/sentinel-autogen-hunter?style=for-the-badge&logo=github&color=gold)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/raghavkhandal72-coder/sentinel-autogen-hunter?style=for-the-badge&logo=github&color=orange)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/network/members)
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?style=for-the-badge&logo=python)](https://python.org)
 [![Zero-Trust](https://img.shields.io/badge/architecture-zero--trust-red?style=for-the-badge&logo=securityscorecard)](https://csrc.nist.gov/publications/detail/sp/800-207/final)
 [![Microsoft AutoGen](https://img.shields.io/badge/AI%20Agents-Microsoft%20AutoGen-0078D4?style=for-the-badge&logo=microsoft)](https://github.com/microsoft/autogen)
@@ -13,6 +15,12 @@
 
 <p align="center">
   <b>An open-source, multi-agent AI threat hunter that intercepts cloud network telemetry, arbitrates security consensus, synthesizes Microsoft Sentinel KQL rules, and safely executes zero-trust firewall mitigations.</b>
+</p>
+
+<p align="center">
+  <a href="https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/stargazers">
+    <img src="https://img.shields.io/badge/%E2%AD%90%20Star%20This%20Repo-If%20You%20Find%20It%20Useful-gold?style=for-the-badge" alt="Star Repository" />
+  </a>
 </p>
 
 [Quickstart](#-the-60-second-quickstart) •
@@ -33,7 +41,7 @@ Spin up the complete zero-trust test harness (OpenSSH honeypot, streaming teleme
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/sentinel-autogen-hunter.git
+git clone https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter.git
 cd sentinel-autogen-hunter
 
 # 2. Launch the isolated Docker Compose playground
@@ -352,5 +360,18 @@ tests/test_tools.py::test_sentinel_push_simulation PASSED
 
 ---
 
+## ⭐ Star History
+
+If you find Sentinel-AutoGen-Hunter useful for your research, enterprise SOC, or portfolio, give it a star!
+
+<div align="center">
+  <a href="https://star-history.com/#raghavkhandal72-coder/sentinel-autogen-hunter&Date">
+    <img src="https://api.star-history.com/svg?repos=raghavkhandal72-coder/sentinel-autogen-hunter&type=Date" alt="Star History Chart" width="700" />
+  </a>
+</div>
+
+---
+
 ## 📄 License
 This project is licensed under the [MIT License](LICENSE). Built for security researchers, DevOps engineers, and cloud architects worldwide.
+
