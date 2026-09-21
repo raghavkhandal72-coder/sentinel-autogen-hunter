@@ -1,0 +1,47 @@
+name: Autonomous Multi-Repo AI Scanner
+
+on:
+  # 1. Scheduled autonomous execution every midnight UTC
+  schedule:
+    - cron: '0 0 * * *'
+
+  # 2. Remote webhook wake-up from other repositories on push/PR
+  repository_dispatch:
+    types: [trigger-ai-scan]
+
+  # 3. Manual on-demand trigger from GitHub Actions dashboard
+  workflow_dispatch:
+
+jobs:
+  autonomous-scan:
+    name: Crawl & Audit Multi-Repo Threat Surface
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Execute Autonomous Multi-Repo Threat Crawl
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          NVIDIA_NIM_API_KEY: ${{ secrets.NVIDIA_NIM_API_KEY }}
+          HUNTER_MODE: ${{ secrets.HUNTER_MODE || 'mock' }}
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          SENTINEL_WORKSPACE_ID: ${{ secrets.SENTINEL_WORKSPACE_ID }}
+          SENTINEL_SHARED_KEY: ${{ secrets.SENTINEL_SHARED_KEY }}
+        run: |
+          python -m agents.orchestrator --scan-all-repos
+          python -m agents.orchestrator --scan-ecosystem
+

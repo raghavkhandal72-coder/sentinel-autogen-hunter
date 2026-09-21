@@ -237,8 +237,59 @@ Use these XYZ-framework points when presenting this architecture in senior engin
 
 Sentinel-AutoGen-Hunter maintains **100% unit and integration test coverage** across all architectural boundaries:
 
+---
+
+## 🌐 Autonomous Multi-Repo GitHub Crawler & Ecosystem Ingestion
+
+Sentinel-AutoGen-Hunter functions as a centralized security brain across your entire developer ecosystem. It can crawl all repositories owned, collaborated on, or affiliated with organizations:
+
 ```bash
-# Run the complete test suite
+# Audit recent commit streams across all repositories for leaked keys / malicious code
+python -m agents.orchestrator --scan-all-repos
+
+# Deeply index public & private repos, extracting critical configurations (Dockerfile, K8s, CI/CD)
+python -m agents.orchestrator --scan-ecosystem
+```
+
+### GitHub Actions Scheduled Automation
+Every midnight UTC, `.github/workflows/autonomous_scanner.yml` executes an automated threat crawl across all repos, alerting your SOC immediately if sensitive credentials or malicious commits are introduced.
+
+---
+
+## 🛑 Human-in-the-Loop (HITL) Containment Gate
+
+To prevent automated network partitioning of vital assets (e.g. active domain controllers, internal VPN bastions `10.0.*`, `192.168.1.*`), Sentinel-AutoGen-Hunter enforces a Zero-Trust Human Approval gate:
+
+- **Autonomous Execution**: External adversary IPs are isolated instantly via `iptables DOCKER-USER`.
+- **HITL Interception**: Internal and critical subnets trigger `PENDING_APPROVAL` with an action ID (e.g. `hitl-3f8a912c`) and alert SecOps via Microsoft Teams Adaptive Cards.
+- **SecOps Authorization Endpoints**:
+  - `GET /remediation/pending` — Review queued actions.
+  - `POST /remediation/approve/{action_id}` — Authorize and execute isolation.
+  - `POST /remediation/reject/{action_id}` — Reject false-positive events.
+
+---
+
+## ☁️ Azure Bicep Infrastructure as Code (IaC)
+
+Deploy the entire Microsoft Sentinel SOC environment natively to Azure using declarative Bicep:
+
+```bash
+az deployment group create \
+  --resource-group rg-threat-hunter-prod \
+  --template-file infra/sentinel_setup.bicep \
+  --parameters workspaceName=ThreatHunter-SentinelWorkspace
+```
+
+Provisions:
+1. `Microsoft.OperationalInsights/workspaces` (Log Analytics with 30-day retention)
+2. `Microsoft.OperationsManagement/solutions` (Microsoft Sentinel SecurityInsights)
+
+---
+
+## 🧪 Comprehensive Test Suite (52/52 Tests Passing)
+
+```bash
+# Run the complete test suite (100% offline, zero API fees)
 python -m pytest tests/ -v
 ```
 
@@ -257,6 +308,24 @@ tests/test_cspm.py::test_cspm_database_initialization PASSED
 tests/test_cspm.py::test_cspm_sql_query_execution PASSED
 tests/test_cspm.py::test_cspm_query_prevent_mutation PASSED
 tests/test_cspm.py::test_cspm_engine_agent_analysis PASSED
+tests/test_github_scanner.py::test_scan_commit_message_detects_aws_key PASSED
+tests/test_github_scanner.py::test_scan_commit_message_detects_github_pat PASSED
+tests/test_github_scanner.py::test_scan_commit_message_detects_private_key PASSED
+tests/test_github_scanner.py::test_scan_commit_message_detects_malicious_pipe PASSED
+tests/test_github_scanner.py::test_scan_commit_message_clean PASSED
+tests/test_github_scanner.py::test_ingest_all_repos_deterministic_fallback PASSED
+tests/test_github_scanner.py::test_mcp_server_ingest_all_repos_dispatch PASSED
+tests/test_global_repo_crawler.py::test_get_all_repositories_deterministic_fallback PASSED
+tests/test_global_repo_crawler.py::test_audit_entire_github_ecosystem PASSED
+tests/test_global_repo_crawler.py::test_mcp_audit_entire_github_ecosystem PASSED
+tests/test_global_repo_crawler.py::test_autogen_swarm_ecosystem_audit PASSED
+tests/test_global_repo_crawler.py::test_orchestrator_ecosystem_endpoint PASSED
+tests/test_hitl.py::test_is_high_risk_target PASSED
+tests/test_hitl.py::test_request_containment_autonomous_execution PASSED
+tests/test_hitl.py::test_request_containment_hitl_queue_and_approval PASSED
+tests/test_hitl.py::test_reject_action_workflow PASSED
+tests/test_hitl.py::test_approve_nonexistent_action PASSED
+tests/test_hitl.py::test_orchestrator_hitl_api_endpoints PASSED
 tests/test_iac_scanner.py::test_k8s_manifest_violations_detected PASSED
 tests/test_iac_scanner.py::test_k8s_manifest_hardened_passed PASSED
 tests/test_iac_scanner.py::test_terraform_open_ingress_detected PASSED
@@ -278,7 +347,7 @@ tests/test_tools.py::test_threat_intel_evaluation PASSED
 tests/test_tools.py::test_notifier_simulation PASSED
 tests/test_tools.py::test_sentinel_push_simulation PASSED
 
-======================== 34 passed in 2.42s ========================
+======================== 52 passed, 1 warning in 2.06s ========================
 ```
 
 ---

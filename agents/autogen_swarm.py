@@ -76,3 +76,25 @@ class AutoGenThreatSwarm:
             f"| Command={remediation_result.get('proposed_command')} | KQL Generated."
         )
         return pipeline_result
+
+    def audit_github_ecosystem(self, github_token: str | None = None) -> dict[str, Any]:
+        """Runs the multi-agent analysis on all accessible GitHub repositories and configs."""
+        from .tools.global_repo_crawler import audit_entire_github_ecosystem
+
+        ecosystem = audit_entire_github_ecosystem(github_token)
+        analysis = self.analyzer.analyze(
+            {
+                "event_type": "github_ecosystem_audit",
+                "source_ip": "127.0.0.1",
+                "target_user": "github-actions-bot",
+                "raw_log": (
+                    f"Audited {ecosystem.get('total_repositories_found', 0)} repositories, "
+                    f"{ecosystem.get('total_critical_files_indexed', 0)} critical configs."
+                ),
+            }
+        )
+        return {
+            "ecosystem": ecosystem,
+            "analysis": analysis,
+            "swarm_status": "COMPLETED",
+        }

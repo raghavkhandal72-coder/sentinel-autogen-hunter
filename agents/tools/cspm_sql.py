@@ -161,7 +161,7 @@ class CloudPostureDatabase:
         """Executes a read-only SQL posture query and returns serialized dictionaries."""
         # Enforce read-only querying to prevent database modification
         stripped = query.strip().upper()
-        if not (stripped.startswith("SELECT") or stripped.startswith("WITH")):
+        if not stripped.startswith(("SELECT", "WITH")):
             raise ValueError(
                 "Only read-only SELECT queries are permitted on the CSPM posture database."
             )

@@ -103,18 +103,22 @@ def analyze_iac_content(
             )
 
     # Additional contextual checks for Kubernetes
-    if not is_terraform and "kind:" in content:
-        if "readOnlyRootFilesystem: true" not in content and "containers:" in content:
-            findings.append(
-                {
-                    "rule_id": "K8S-006",
-                    "title": "Root Filesystem Not Read-Only",
-                    "severity": "LOW",
-                    "description": "Container root filesystem should be mounted as read-only to prevent persistent malware.",
-                    "remediation": "Set securityContext.readOnlyRootFilesystem: true",
-                    "occurrence_count": 1,
-                }
-            )
+    if (
+        not is_terraform
+        and "kind:" in content
+        and "readOnlyRootFilesystem: true" not in content
+        and "containers:" in content
+    ):
+        findings.append(
+            {
+                "rule_id": "K8S-006",
+                "title": "Root Filesystem Not Read-Only",
+                "severity": "LOW",
+                "description": "Container root filesystem should be mounted as read-only to prevent persistent malware.",
+                "remediation": "Set securityContext.readOnlyRootFilesystem: true",
+                "occurrence_count": 1,
+            }
+        )
 
     critical_count = sum(1 for f in findings if f["severity"] == "CRITICAL")
     high_count = sum(1 for f in findings if f["severity"] == "HIGH")

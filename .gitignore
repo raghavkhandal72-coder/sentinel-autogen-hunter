@@ -53,3 +53,13 @@ threat_hunter_logs/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Secrets & Local Keys
+.env*
+!.env.example
+api keys.txt
+api_keys*.txt
+*.key
+*.pem
+*.secret
+

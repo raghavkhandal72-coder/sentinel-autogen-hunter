@@ -3,6 +3,7 @@
 Audits Kubernetes manifests and Terraform templates, enforcing CIS benchmarks
 before deployment in CI/CD pipelines.
 """
+
 import os
 import sys
 
@@ -33,13 +34,17 @@ def main():
 
         report = analyze_iac_content(content, filename)
         status_str = "[PASSED]" if report["passed"] else "[FAILED]"
-        print(f"\nAudit: {path} -> {status_str} (Compliance Score: {report['compliance_score']}/100)")
+        print(
+            f"\nAudit: {path} -> {status_str} (Compliance Score: {report['compliance_score']}/100)"
+        )
         print(f"Summary: {report['summary']}")
 
         if not report["passed"]:
             any_failed = True
             for finding in report["findings"]:
-                print(f"  [!] {finding['severity']}: {finding['title']} ({finding['rule_id']})")
+                print(
+                    f"  [!] {finding['severity']}: {finding['title']} ({finding['rule_id']})"
+                )
                 print(f"      Remediation: {finding['remediation']}")
 
     print("\n" + "=" * 60)
@@ -47,7 +52,9 @@ def main():
         print("[!] IaC Policy Gate: Violations detected. Deployment blocked.")
         sys.exit(1)
     else:
-        print("[PASS] IaC Policy Gate: All manifests are CIS compliant. Safe to deploy.")
+        print(
+            "[PASS] IaC Policy Gate: All manifests are CIS compliant. Safe to deploy."
+        )
         sys.exit(0)
 
 

@@ -125,6 +125,29 @@ class HunterMCPServer:
                     "required": ["sql_query"],
                 },
             },
+            {
+                "name": "ingest_all_repos",
+                "description": "Autonomously audits commit streams across all repositories owned by the user for hardcoded secrets and backdoor patterns.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {},
+                    "required": [],
+                },
+            },
+            {
+                "name": "audit_entire_github_ecosystem",
+                "description": "Globally indexes all public and private repositories, organizations, and critical configuration files.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "github_token": {
+                            "type": "string",
+                            "description": "Optional PAT token. Defaults to environment variable.",
+                        }
+                    },
+                    "required": [],
+                },
+            },
         ]
 
     @staticmethod
@@ -170,6 +193,19 @@ class HunterMCPServer:
                 db = get_cspm_db()
                 results = db.execute_query(sql)
                 return {"success": True, "count": len(results), "assets": results}
+
+            elif tool_name == "ingest_all_repos":
+                from agents.tools.github_scanner import ingest_all_repos
+
+                return ingest_all_repos()
+
+            elif tool_name == "audit_entire_github_ecosystem":
+                from agents.tools.global_repo_crawler import (
+                    audit_entire_github_ecosystem,
+                )
+
+                token = arguments.get("github_token")
+                return audit_entire_github_ecosystem(token)
 
             else:
                 return {"error": f"Unknown MCP tool: {tool_name}"}
