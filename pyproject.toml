@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sentinel-autogen-hunter"
-version = "1.0.0"
-description = "Cloud-Native Autonomous Threat Hunter powered by Microsoft AutoGen and Microsoft Sentinel"
+version = "2.0.0"
+description = "Enterprise Autonomous Threat Hunter powered by Microsoft AutoGen, Sentinel, Multi-SIEM Sigma & MCP"
 readme = "README.md"
-authors = [{ name = "Threat Hunter Core Team" }]
+authors = [{ name = "Raghav Khandal", email = "raghavkhandal72@gmail.com" }]
 license = { text = "MIT" }
 requires-python = ">=3.10"
 dependencies = [
@@ -18,6 +18,9 @@ dependencies = [
     "prometheus-client>=0.17.0",
     "python-dotenv>=1.0.0",
 ]
+
+[project.scripts]
+sentinel-hunter = "cli.main:main"
 
 [project.optional-dependencies]
 dev = [

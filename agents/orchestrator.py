@@ -4,6 +4,7 @@ import logging
 
 import uvicorn
 from fastapi import BackgroundTasks, FastAPI, status
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
 from .autogen_swarm import AutoGenThreatSwarm
@@ -279,6 +280,86 @@ async def reject_containment_endpoint(
     from .hitl_approver import reject_action
 
     return reject_action(action_id, reason)
+
+
+# ==============================================================================
+# Feature 5: Multi-SIEM Universal Sigma Rule Synthesizer Endpoint
+# ==============================================================================
+class SigmaSynthesizeRequest(BaseModel):
+    threat_type: str = Field(default="ssh_brute_force", description="Classified threat scenario")
+    source_ip: str = Field(default="192.168.1.100", description="Attacker IPv4 or IPv6 address")
+    target_asset: str = Field(default="prod-k8s-ingress", description="Compromised target asset")
+
+
+@app.post("/audit/sigma", status_code=status.HTTP_200_OK)
+async def synthesize_sigma_endpoint(request: SigmaSynthesizeRequest):
+    """Synthesizes official Sigma YAML rules and transpiles to Sentinel KQL, Splunk SPL, and Elastic ES|QL."""
+    from .sigma_engine import synthesize_universal_matrix
+
+    payload = request.model_dump()
+    payload["attacker_ip"] = request.source_ip
+    return synthesize_universal_matrix(payload)
+
+
+# ==============================================================================
+# Feature 6: Active Defense Canary Honeytoken Endpoints
+# ==============================================================================
+class HoneytokenDeployRequest(BaseModel):
+    token_type: str = Field(default="aws_key", description="Type: aws_key, github_token, azure_secret, db_connection")
+    asset_name: str = Field(default="production-api", description="Decoy asset designation")
+    deployment_path: str = Field(default="config/.env", description="Simulated file or repo path")
+
+
+class HoneytokenTripwireRequest(BaseModel):
+    token_value: str = Field(..., description="Compromised canary token value")
+    source_ip: str = Field(default="198.51.100.42", description="Attacker IP triggering tripwire")
+    action: str = Field(default="unauthorized_credential_usage", description="Observed attacker action")
+    user_agent: str = Field(default="curl/8.4.0", description="Client user agent")
+
+
+@app.post("/deception/honeytoken", status_code=status.HTTP_201_CREATED)
+async def deploy_honeytoken_endpoint(request: HoneytokenDeployRequest):
+    """Deploys a new cryptographic canary honeytoken tripwire."""
+    from .deception_engine import generate_honeytoken
+
+    return generate_honeytoken(
+        token_type=request.token_type,
+        asset_name=request.asset_name,
+        deployment_path=request.deployment_path,
+    )
+
+
+@app.get("/deception/tokens", status_code=status.HTTP_200_OK)
+async def list_honeytokens_endpoint():
+    """Lists all active and tripped honeytoken deception tripwires."""
+    from .deception_engine import list_honeytokens
+
+    tokens = list_honeytokens()
+    return {"total_armed": len(tokens), "tokens": tokens}
+
+
+@app.post("/deception/tripwire", status_code=status.HTTP_200_OK)
+async def trigger_tripwire_endpoint(request: HoneytokenTripwireRequest):
+    """Activates canary tripwire and executes immediate Zero-Trust containment on attacker IP."""
+    from .deception_engine import trigger_tripwire
+
+    return trigger_tripwire(
+        token_value=request.token_value,
+        source_ip=request.source_ip,
+        action=request.action,
+        user_agent=request.user_agent,
+    )
+
+
+# ==============================================================================
+# Feature 7: Cyber SOC Operations Command Center Dashboard
+# ==============================================================================
+@app.get("/dashboard", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
+async def serve_dashboard_ui():
+    """Serves the interactive dark-mode Cyber SOC Command Center dashboard."""
+    from .dashboard_ui import DASHBOARD_HTML
+
+    return HTMLResponse(content=DASHBOARD_HTML)
 
 
 if __name__ == "__main__":

@@ -6,16 +6,15 @@
 [![CI Build](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge&logo=github-actions)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/actions)
 [![CodeQL Security Scan](https://img.shields.io/badge/CodeQL%20SAST-verified-00ff66?style=for-the-badge&logo=github)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/actions)
 [![GitHub Stars](https://img.shields.io/github/stars/raghavkhandal72-coder/sentinel-autogen-hunter?style=for-the-badge&logo=github&color=gold)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/raghavkhandal72-coder/sentinel-autogen-hunter?style=for-the-badge&logo=github&color=orange)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/network/members)
+[![Multi-SIEM Sigma](https://img.shields.io/badge/Sigma%20Standard-KQL%20%7C%20SPL%20%7C%20ES%7CQL-blueviolet?style=for-the-badge&logo=siem)](https://github.com/SigmaHQ/sigma)
+[![Active Deception](https://img.shields.io/badge/Active%20Deception-Canary%20Tripwires-orange?style=for-the-badge&logo=shield)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter)
+[![Cyber SOC UI](https://img.shields.io/badge/Console-Cyber%20SOC%20Dashboard-00ff88?style=for-the-badge)](http://localhost:8000/dashboard)
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?style=for-the-badge&logo=python)](https://python.org)
 [![Zero-Trust](https://img.shields.io/badge/architecture-zero--trust-red?style=for-the-badge&logo=securityscorecard)](https://csrc.nist.gov/publications/detail/sp/800-207/final)
-[![Microsoft AutoGen](https://img.shields.io/badge/AI%20Agents-Microsoft%20AutoGen-0078D4?style=for-the-badge&logo=microsoft)](https://github.com/microsoft/autogen)
-[![Microsoft Sentinel](https://img.shields.io/badge/SIEM-Microsoft%20Sentinel-0078D4?style=for-the-badge&logo=microsoftazure)](https://azure.microsoft.com/en-us/products/microsoft-sentinel)
-[![Model Context Protocol](https://img.shields.io/badge/Protocol-Model%20Context%20(MCP)-blueviolet?style=for-the-badge)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
 
 <p align="center">
-  <b>An open-source, multi-agent AI threat hunter that intercepts cloud network telemetry, arbitrates security consensus, synthesizes Microsoft Sentinel KQL rules, and safely executes zero-trust firewall mitigations.</b>
+  <b>An enterprise-grade, multi-agent AI threat hunter that intercepts cloud network telemetry, arbitrates security consensus, deploys canary honeytoken tripwires, synthesizes universal Sigma & Microsoft Sentinel KQL detection rules, and safely executes zero-trust firewall mitigations.</b>
 </p>
 
 <p align="center">
@@ -25,12 +24,13 @@
 </p>
 
 [Quickstart](#-the-60-second-quickstart) •
+[Cyber SOC Dashboard](#-cyber-soc-operations-command-center) •
 [Architecture](#-system-architecture) •
 [AutoGen Multi-Agent Swarm](#-autogen-multi-agent-swarm) •
-[Microsoft Sentinel & KQL](#-microsoft-sentinel--kql-synthesis) •
+[Universal Sigma & Multi-SIEM](#-universal-multi-siem-sigma-transpiler) •
+[Active Deception & Honeytokens](#-active-defense--canary-honeytoken-deception-engine) •
 [MCP Server](#-model-context-protocol-mcp-server) •
-[Benchmarks & Big-O](#-algorithmic-complexity--benchmarks) •
-[Interview Talking Points](#-system-design-interview-talking-points)
+[Benchmarks & Big-O](#-algorithmic-complexity--benchmarks)
 
 </div>
 
@@ -61,6 +61,26 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 python -m pytest tests/ -v
 ```
+
+---
+
+## 🖥️ Cyber SOC Operations Command Center (`/dashboard`)
+
+Sentinel-AutoGen-Hunter features an embedded, real-time dark-mode **Cyber SOC Operations Command Center** accessible directly in your browser:
+
+```bash
+# Launch the orchestrator and open the dashboard
+python -m agents.orchestrator
+# Open in browser: http://localhost:8000/dashboard
+```
+
+### Dashboard Capabilities:
+- **Real-Time Threat Telemetry**: Live metrics for threats intercepted, DOCKER-USER firewall drops, armed honeytokens, and AI swarm consensus confidence.
+- **Universal Multi-SIEM Rule Studio**: Interactive tabbed editor generating and testing **Sigma YAML, Microsoft Sentinel KQL, Splunk SPL, and Elastic ES|QL** with instant 1-click clipboard copy.
+- **MITRE ATT&CK Matrix Heatmap**: Real-time visual tactic classification (Initial Access, Credential Access, Defense Evasion, Lateral Movement).
+- **Canary Honeytoken Deception Manager**: 1-click generation of deceptive AWS keys, GitHub tokens, and Azure secrets with simulated attacker tripwires.
+- **Human-in-the-Loop (HITL) Containment Console**: Authorize or reject high-risk quarantine actions on sensitive subnets.
+- **Live Attack Simulator**: Test brute-force scenarios and canary breaches with instantaneous live terminal streaming.
 
 ---
 
@@ -120,19 +140,77 @@ Unlike traditional static SIEM alert rules, **Sentinel-AutoGen-Hunter** leverage
 
 ---
 
-## 🔷 Microsoft Sentinel & KQL Synthesis
+## ⚡ Universal Multi-SIEM Sigma Transpiler
 
-Autonomous hunting events are formatted to Azure Log Analytics custom log schema (`AutoGenThreatHunt_CL`) and stream directly to Microsoft Sentinel. 
+Unlike platforms tied strictly to a single SIEM vendor, **Sentinel-AutoGen-Hunter** features a vendor-neutral detection engine (`agents/sigma_engine.py`) that converts any detected IOC or attack pattern into:
+1. **SigmaHQ Standard Rule (YAML)**
+2. **Microsoft Sentinel (KQL)**
+3. **Splunk Enterprise & Cloud (SPL)**
+4. **Elasticsearch / Elastic Security (ES|QL)**
+5. **AWS CloudWatch Logs Insights / OpenSearch**
 
-### Auto-Generated Sentinel KQL Detection Rule:
+### Example: Auto-Synthesized Detection Matrix
+
+````yaml
+# Auto-Synthesized SigmaHQ Standard Rule
+title: Autonomous Hunt: Suspicious Ssh Brute Force Detected
+id: e4b2d511-73ad-5011-8a96-cf9b0713437f
+status: test
+tags:
+    - attack.credential_access
+    - attack.t1110.001
+logsource:
+    category: authentication
+    product: linux
+    service: sshd
+detection:
+    selection_ip:
+        src_ip: '198.51.100.42'
+    condition: selection_ip
+level: high
+````
+
 ```kql
-// Auto-synthesized by Sentinel Auditor Agent
+// Transpiled Microsoft Sentinel KQL Rule
 AutoGenThreatHunt_CL
-| where TimeGenerated >= ago(1h)
-| where ThreatType == "ssh_brute_force"
-| summarize AttemptCount = count(), TargetAsset = any(TargetAsset) by AttackerIP
-| where AttemptCount >= 3
-| project TimeGenerated, AttackerIP, TargetAsset, AttemptCount
+| where TimeGenerated >= ago(24h)
+| where ThreatType == "ssh_brute_force" or AttackerIP == "198.51.100.42"
+| summarize EventCount = count() by AttackerIP, TargetAsset, ThreatType
+| where EventCount >= 3
+| project AttackerIP, TargetAsset, ThreatType, EventCount
+```
+
+```spl
+// Transpiled Splunk SPL Query
+index=security sourcetype=linux:auth (src_ip="198.51.100.42" OR signature="ssh_brute_force")
+| stats count earliest(_time) as first_seen latest(_time) as last_seen by src_ip, dest, user
+| where count >= 3
+| sort - count
+```
+
+---
+
+## 🍯 Active Defense: Canary Honeytoken Deception Engine
+
+Catching attacks from network logs alone is reactive; **Active Deception** lures attackers into tripping cryptographic traps (`agents/deception_engine.py`):
+
+- **Supported Honeytoken Types**:
+  - `aws_key`: Decoy `AKIA...` keys with embedded HMAC signatures.
+  - `github_token`: Decoy `ghp_...` Personal Access Tokens.
+  - `azure_secret`: Decoy Azure App Registration client secrets.
+  - `db_connection`: Decoy database URIs targeting isolated tripwire listener ports.
+- **Instantaneous Zero-Trust Containment**:
+  The moment an adversary uses or scans a honeytoken, the orchestrator:
+  1. Identifies the originating attacker IP.
+  2. Executes an immediate `iptables DOCKER-USER` drop rule.
+  3. Dispatches a high-priority Microsoft Teams Adaptive Card incident.
+  4. Streams the breach telemetry directly into Microsoft Sentinel under MITRE `T1078.004` (Cloud Accounts).
+
+```bash
+# Deploy a canary AWS credential into your staging config
+curl -X POST http://localhost:8000/deception/honeytoken \
+     -H "Content-Type: application/json" \
+     -d '{"token_type": "aws_key", "asset_name": "prod-s3-bucket"}'
 ```
 
 ---
@@ -295,7 +373,7 @@ Provisions:
 
 ---
 
-## 🧪 Comprehensive Test Suite (52/52 Tests Passing)
+## 🧪 Comprehensive Test Suite (70/70 Tests Passing)
 
 ```bash
 # Run the complete test suite (100% offline, zero API fees)
@@ -308,6 +386,9 @@ tests/test_agents.py::test_network_analyzer_benign_traffic PASSED
 tests/test_agents.py::test_remediation_agent_command_generation PASSED
 tests/test_agents.py::test_sentinel_auditor_kql_synthesis PASSED
 tests/test_agents.py::test_autogen_swarm_full_hunt_pipeline PASSED
+tests/test_cli.py::test_tui_rendering_functions PASSED
+tests/test_cli.py::test_cli_sigma_synthesis PASSED
+tests/test_cli.py::test_cli_execution_help PASSED
 tests/test_collector.py::test_parse_ssh_failed_login PASSED
 tests/test_collector.py::test_parse_ssh_invalid_user PASSED
 tests/test_collector.py::test_parse_ssh_accepted_password PASSED
@@ -317,6 +398,13 @@ tests/test_cspm.py::test_cspm_database_initialization PASSED
 tests/test_cspm.py::test_cspm_sql_query_execution PASSED
 tests/test_cspm.py::test_cspm_query_prevent_mutation PASSED
 tests/test_cspm.py::test_cspm_engine_agent_analysis PASSED
+tests/test_dashboard.py::test_dashboard_endpoint_serves_html PASSED
+tests/test_deception.py::test_generate_honeytoken_types PASSED
+tests/test_deception.py::test_verify_honeytoken_lookup PASSED
+tests/test_deception.py::test_trigger_tripwire_quarantine PASSED
+tests/test_deception.py::test_deception_agent_workflow PASSED
+tests/test_deception.py::test_orchestrator_deception_api_endpoints PASSED
+tests/test_deception.py::test_mcp_deception_tools PASSED
 tests/test_github_scanner.py::test_scan_commit_message_detects_aws_key PASSED
 tests/test_github_scanner.py::test_scan_commit_message_detects_github_pat PASSED
 tests/test_github_scanner.py::test_scan_commit_message_detects_private_key PASSED
@@ -348,15 +436,23 @@ tests/test_pipeline.py::test_orchestrator_health_endpoint PASSED
 tests/test_pipeline.py::test_orchestrator_sync_analysis_malicious PASSED
 tests/test_pipeline.py::test_orchestrator_async_queue PASSED
 tests/test_pipeline.py::test_testclient_if_available PASSED
+tests/test_sigma_engine.py::test_generate_sigma_yaml_format PASSED
+tests/test_sigma_engine.py::test_transpile_to_kql PASSED
+tests/test_sigma_engine.py::test_transpile_to_splunk_spl PASSED
+tests/test_sigma_engine.py::test_transpile_to_elastic_esql PASSED
+tests/test_sigma_engine.py::test_synthesize_universal_matrix PASSED
+tests/test_sigma_engine.py::test_sigma_engine_agent_execution PASSED
+tests/test_sigma_engine.py::test_orchestrator_sigma_api_endpoint PASSED
+tests/test_sigma_engine.py::test_mcp_synthesize_universal_rule PASSED
 tests/test_tools.py::test_is_valid_ipv4 PASSED
 tests/test_tools.py::test_sanitize_ip_injection_rejection PASSED
 tests/test_tools.py::test_sanitize_ip_valid PASSED
 tests/test_tools.py::test_execute_firewall_rule PASSED
-tests/test_tools.py::test_threat_intel_evaluation PASSED
+tests/test_threat_intel_evaluation PASSED
 tests/test_tools.py::test_notifier_simulation PASSED
-tests/test_tools.py::test_sentinel_push_simulation PASSED
+tests/test_sentinel_push_simulation PASSED
 
-======================== 52 passed, 1 warning in 2.06s ========================
+======================== 70 passed, 1 warning in 3.98s ========================
 ```
 
 ---

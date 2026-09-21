@@ -148,6 +148,44 @@ class HunterMCPServer:
                     "required": [],
                 },
             },
+            {
+                "name": "synthesize_universal_detection_rule",
+                "description": "Converts threat IOCs into Sigma YAML, Sentinel KQL, Splunk SPL, and Elastic ES|QL queries.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "threat_type": {"type": "string", "description": "Type of threat e.g. ssh_brute_force, port_scan"},
+                        "attacker_ip": {"type": "string", "description": "Attacker IPv4 address"},
+                        "target_asset": {"type": "string", "description": "Target server or workload name"},
+                    },
+                    "required": ["threat_type"],
+                },
+            },
+            {
+                "name": "deploy_honeytoken",
+                "description": "Deploys an active cryptographic canary honeytoken tripwire (AWS key, GitHub PAT, Azure secret, DB URI).",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "token_type": {"type": "string", "enum": ["aws_key", "github_token", "azure_secret", "db_connection"], "default": "aws_key"},
+                        "asset_name": {"type": "string", "default": "prod-api"},
+                        "deployment_path": {"type": "string", "default": "config/.env"},
+                    },
+                    "required": ["token_type"],
+                },
+            },
+            {
+                "name": "trigger_honeytoken_tripwire",
+                "description": "Activates canary tripwire upon attacker credential usage and executes immediate DOCKER-USER firewall containment.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "token_value": {"type": "string", "description": "Compromised honeytoken string"},
+                        "source_ip": {"type": "string", "description": "Attacker IP"},
+                    },
+                    "required": ["token_value", "source_ip"],
+                },
+            },
         ]
 
     @staticmethod
@@ -206,6 +244,26 @@ class HunterMCPServer:
 
                 token = arguments.get("github_token")
                 return audit_entire_github_ecosystem(token)
+
+            elif tool_name == "synthesize_universal_detection_rule":
+                from agents.sigma_engine import synthesize_universal_matrix
+
+                return synthesize_universal_matrix(arguments)
+
+            elif tool_name == "deploy_honeytoken":
+                from agents.deception_engine import generate_honeytoken
+
+                token_type = arguments.get("token_type", "aws_key")
+                asset = arguments.get("asset_name", "prod-api")
+                path = arguments.get("deployment_path", "config/.env")
+                return generate_honeytoken(token_type, asset, path)
+
+            elif tool_name == "trigger_honeytoken_tripwire":
+                from agents.deception_engine import trigger_tripwire
+
+                token_val = arguments.get("token_value", "")
+                ip = arguments.get("source_ip", "198.51.100.42")
+                return trigger_tripwire(token_val, ip)
 
             else:
                 return {"error": f"Unknown MCP tool: {tool_name}"}
