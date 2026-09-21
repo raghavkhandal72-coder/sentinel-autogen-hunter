@@ -4,6 +4,7 @@
 ### **Cloud-Native Autonomous Threat Hunter powered by Microsoft AutoGen, Sentinel & MCP**
 
 [![CI Build](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge&logo=github-actions)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/actions)
+[![CodeQL Security Scan](https://img.shields.io/badge/CodeQL%20SAST-verified-00ff66?style=for-the-badge&logo=github)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/actions)
 [![GitHub Stars](https://img.shields.io/github/stars/raghavkhandal72-coder/sentinel-autogen-hunter?style=for-the-badge&logo=github&color=gold)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/raghavkhandal72-coder/sentinel-autogen-hunter?style=for-the-badge&logo=github&color=orange)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/network/members)
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?style=for-the-badge&logo=python)](https://python.org)

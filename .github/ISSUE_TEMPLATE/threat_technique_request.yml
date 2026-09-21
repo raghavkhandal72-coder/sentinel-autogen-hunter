@@ -1,0 +1,30 @@
+name: MITRE ATT&CK Technique Detection Request
+description: Request autonomous multi-agent detection and mitigation for a new threat vector
+title: "[THREAT-VECTOR]: "
+labels: ["enhancement", "mitre-attack", "agent-intelligence"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to request detection rules, KQL queries, and zero-trust firewall mitigations for a new MITRE ATT&CK technique.
+  - type: input
+    id: mitre-id
+    attributes:
+      label: MITRE ATT&CK Technique ID
+      placeholder: "e.g., T1078.004 or T1562.001"
+    validations:
+      required: true
+  - type: textarea
+    id: telemetry-sample
+    attributes:
+      label: Raw Telemetry Sample
+      description: Sample syslog, auth.log, or cloud event log representing this activity.
+    validations:
+      required: true
+  - type: textarea
+    id: mitigation-concept
+    attributes:
+      label: Proposed Mitigation Logic
+      description: What containment actions should the Remediation Agent take?
+    validations:
+      required: true

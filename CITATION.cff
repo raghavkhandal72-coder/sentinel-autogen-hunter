@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you utilize this software or reference its multi-agent architecture in academic research, please cite it as below."
+authors:
+  - family-names: "Khandal"
+    given-names: "Raghav"
+    affiliation: "NIIT University, Neemrana, Rajasthan, India"
+title: "Sentinel-AutoGen-Hunter: Cloud-Native Autonomous Threat Hunter powered by Microsoft AutoGen, Sentinel & Model Context Protocol"
+version: 1.2.0
+date-released: 2026-09-21
+url: "https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter"
+license: MIT
+keywords:
+  - "autonomous-agents"
+  - "microsoft-autogen"
+  - "microsoft-sentinel"
+  - "model-context-protocol"
+  - "zero-trust"
+  - "devsecops"
+  - "threat-hunting"
+  - "kql"
