@@ -4,13 +4,13 @@ import json
 import logging
 import os
 from datetime import datetime, timezone
-from typing import Any, Dict
+from typing import Any
 
 logger = logging.getLogger("SentinelConnector")
 
 
 def push_to_sentinel(
-    threat_event: Dict[str, Any], log_type: str = "AutoGenThreatHunt_CL"
+    threat_event: dict[str, Any], log_type: str = "AutoGenThreatHunt_CL"
 ) -> bool:
     """Streams structured security telemetry directly to Microsoft Sentinel.
 

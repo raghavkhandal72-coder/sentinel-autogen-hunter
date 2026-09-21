@@ -8,7 +8,6 @@ import logging
 import os
 import re
 from datetime import datetime, timezone
-from typing import Tuple
 
 logger = logging.getLogger("LinuxCMD")
 
@@ -17,7 +16,7 @@ IP_CLEAN_REGEX = re.compile(
 )
 
 
-def sanitize_ip(ip_address: str) -> Tuple[bool, str]:
+def sanitize_ip(ip_address: str) -> tuple[bool, str]:
     """Sanitizes and validates an IP or CIDR block against command injection.
 
     Rejects any shell metacharacters (;, &, |, `, $, \\, newline, space).

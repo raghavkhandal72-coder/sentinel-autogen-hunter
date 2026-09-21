@@ -37,12 +37,16 @@ jobs:
           # Exit-zero treats all errors as warnings
           flake8 . --count --exit-zero --max-complexity=15 --max-line-length=127 --statistics
 
-      - name: Execute Pytest Suite
+      - name: Execute Pytest Suite (34 Unit & Integration Tests)
         env:
           HUNTER_MODE: "mock"
           LLM_API_KEY: "mock_key_for_testing"
         run: |
           python -m pytest tests/ -v
+
+      - name: Pre-Deployment Shift-Left IaC Security Scan
+        run: |
+          python scripts/scan_iac.py
 
   docker-build:
     name: Container Build & Health Validation

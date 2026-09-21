@@ -92,6 +92,39 @@ class HunterMCPServer:
                     "required": ["threat_event"],
                 },
             },
+            {
+                "name": "scan_iac_manifest",
+                "description": "Shift-left pre-deployment static analysis of Kubernetes manifests or Terraform files.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "content": {
+                            "type": "string",
+                            "description": "The YAML or HCL configuration text to analyze",
+                        },
+                        "filename": {
+                            "type": "string",
+                            "description": "File name e.g. deployment.yaml or main.tf",
+                            "default": "manifest.yaml",
+                        },
+                    },
+                    "required": ["content"],
+                },
+            },
+            {
+                "name": "query_cloud_posture_sql",
+                "description": "Executes an ANSI SQL query across multi-cloud infrastructure assets to audit security posture.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "sql_query": {
+                            "type": "string",
+                            "description": "Read-only SELECT query against the cloud_assets table",
+                        }
+                    },
+                    "required": ["sql_query"],
+                },
+            },
         ]
 
     @staticmethod
@@ -122,6 +155,21 @@ class HunterMCPServer:
                 event = arguments.get("threat_event", {})
                 success = push_to_sentinel(event)
                 return {"success": success}
+
+            elif tool_name == "scan_iac_manifest":
+                from agents.tools.iac_analyzer import analyze_iac_content
+
+                content = arguments.get("content", "")
+                filename = arguments.get("filename", "manifest.yaml")
+                return analyze_iac_content(content, filename)
+
+            elif tool_name == "query_cloud_posture_sql":
+                from agents.tools.cspm_sql import get_cspm_db
+
+                sql = arguments.get("sql_query", "SELECT * FROM cloud_assets")
+                db = get_cspm_db()
+                results = db.execute_query(sql)
+                return {"success": True, "count": len(results), "assets": results}
 
             else:
                 return {"error": f"Unknown MCP tool: {tool_name}"}

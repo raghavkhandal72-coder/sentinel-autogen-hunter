@@ -138,6 +138,44 @@ Sentinel-AutoGen-Hunter exposes its complete cyber tooling suite through an offi
 | `queue_firewall_containment` | Enqueue zero-trust DOCKER-USER firewall drop | `ip_to_block`, `proposed_command`, `risk_level` |
 | `send_teams_alert` | Dispatch Adaptive Card alert to SecOps channel | `threat_type`, `attacker_ip`, `recommended_action` |
 | `stream_to_sentinel` | Stream security telemetry into Azure Log Analytics | `threat_event` (object) |
+| `scan_iac_manifest` | Pre-deployment CIS security scan on K8s/Terraform | `content` (string), `filename` (string) |
+| `query_cloud_posture_sql` | Query cloud asset graph database using ANSI SQL | `sql_query` (string) |
+
+---
+
+## 🛡️ Shift-Left DevSecOps: IaC Pre-Deployment Security Scanner
+
+Runtime threat hunting catches attacks as they happen; **Shift-Left DevSecOps** prevents vulnerabilities from reaching production in the first place.
+
+Sentinel-AutoGen-Hunter inspects Kubernetes manifests (`k8s/deployment.yaml`) and Terraform configurations (`terraform/main.tf`) against CIS benchmarks prior to merge:
+
+```bash
+# Run the pre-deployment IaC scanner CLI
+python scripts/scan_iac.py
+```
+
+- **Policy Enforcements**: Rejects `privileged: true`, containers running as root (`runAsUser: 0`), unconstrained host networking (`hostNetwork: true`), and open internet ingress (`0.0.0.0/0` on sensitive ports like 22/3389).
+- **Automated Remediation**: Synthesizes clean YAML/HCL patch diffs and developer action items with compliance grades (A through F).
+
+---
+
+## 🗄️ SQL-Based Cloud Security Posture Management (CSPM)
+
+Instead of complex JSON traversals, cloud infrastructure assets (Azure VMs, Kubernetes pods, Storage accounts, IAM roles, and NSGs) are indexed into a high-speed relational SQL asset database (`cloud_assets`).
+
+SecOps analysts and AI agents can execute ANSI SQL queries to discover posture drift and security violations:
+
+```sql
+-- Find all internet-facing unencrypted assets
+SELECT id, asset_type, region, compliance_status 
+FROM cloud_assets 
+WHERE is_public_facing = 1 AND is_encrypted = 0;
+
+-- Discover privileged admin roles lacking MFA enforcement
+SELECT id, cloud_provider 
+FROM cloud_assets 
+WHERE has_excessive_privilege = 1 AND mfa_enforced = 0;
+```
 
 ---
 
@@ -158,6 +196,8 @@ Executing AI-generated bash commands directly as `root` is a critical security v
 | **Detection Engine** | Static Correlation Rules | Hardcoded Regex | Multi-Agent LLM Consensus |
 | **Remediation Speed** | Manual Analyst Ticket | None | Real-time Autonomous Drop (<2s) |
 | **Rollback Safety** | Manual Reversion | None | Guaranteed Idempotent Rollback |
+| **Shift-Left IaC Audit**| Separate Tool (Snyk / Prisma) | None | Native Built-in IaC Scanner |
+| **SQL-Based CSPM** | Expensive Add-on | None | Native Asset Graph SQL Engine |
 | **SIEM Integration** | Proprietary Agents | Text Log File | Native Microsoft Sentinel + KQL |
 | **Copilot Extensibility**| Closed API | None | Model Context Protocol (MCP) |
 | **Infrastructure** | High Resource Footprint | Uncontainerized | Zero-Trust Docker / Kubernetes |
@@ -171,6 +211,8 @@ Executing AI-generated bash commands directly as `root` is a critical security v
 | :--- | :--- | :---: | :---: | :--- |
 | **Telemetry Collector** | `follow_log()` | $\mathcal{O}(1)$ | $\mathcal{O}(1)$ | Constant memory streaming file pointer (`seek(0, 2)`) |
 | **Regex Pre-filter** | `parse_ssh_log()` | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Deterministic Finite Automaton (DFA) string scan |
+| **IaC AST Scanner** | `analyze_iac_content()`| $\mathcal{O}(L)$ | $\mathcal{O}(1)$ | Linear regex pattern match over manifest line length $L$ |
+| **CSPM SQL Engine** | `execute_query()` | $\mathcal{O}(K \log K)$ | $\mathcal{O}(K)$ | High-speed B-Tree indexed relational asset queries |
 | **IP Sanitizer** | `sanitize_ip()` | $\mathcal{O}(1)$ | $\mathcal{O}(1)$ | Length-bounded regex validation |
 | **Agent Dispatch** | Background Task Queue | $\mathcal{O}(1)$ | $\mathcal{O}(K)$ | Asynchronous FIFO offload via FastAPI worker pool |
 | **Host Enforcer** | `enforcer.sh` | $\mathcal{O}(M)$ | $\mathcal{O}(M)$ | Batch log rotation with atomic file locking (`flock`) |
@@ -184,6 +226,7 @@ Executing AI-generated bash commands directly as `root` is a critical security v
 Use these XYZ-framework points when presenting this architecture in senior engineering interviews at Microsoft:
 
 - **Distributed Orchestration**: *"Architected an asynchronous FastAPI event pipeline that processes incoming Linux telemetry via non-blocking background workers, maintaining sub-10ms response latency during high-frequency brute-force spikes."*
+- **Shift-Left Security & CSPM**: *"Engineered automated static analysis for Kubernetes and Terraform manifests alongside a SQL-backed asset graph, uniting pre-deployment IaC validation and continuous Cloud Security Posture Management into a single control plane."*
 - **Zero-Trust Hardening**: *"Engineered a secure boundary between non-root AI containers and host firewall layers by using an append-only transaction log and targeting the `DOCKER-USER` iptables chain, preventing container escape and lateral attack vector exploitation."*
 - **Generative AI in Production**: *"Replaced non-deterministic conversational AI behaviors with structured schema enforcement and an AutoGen multi-agent debate model, reducing false-positive remediation triggers by over 85%."*
 - **Enterprise Observability**: *"Built out end-to-end telemetry streaming to Microsoft Sentinel while simultaneously exporting real-time Prometheus SOC metrics to Grafana for instant SecOps situational awareness."*
@@ -210,6 +253,14 @@ tests/test_collector.py::test_parse_ssh_invalid_user PASSED
 tests/test_collector.py::test_parse_ssh_accepted_password PASSED
 tests/test_collector.py::test_parse_ssh_preauth_disconnect PASSED
 tests/test_collector.py::test_parse_ssh_unrelated_line PASSED
+tests/test_cspm.py::test_cspm_database_initialization PASSED
+tests/test_cspm.py::test_cspm_sql_query_execution PASSED
+tests/test_cspm.py::test_cspm_query_prevent_mutation PASSED
+tests/test_cspm.py::test_cspm_engine_agent_analysis PASSED
+tests/test_iac_scanner.py::test_k8s_manifest_violations_detected PASSED
+tests/test_iac_scanner.py::test_k8s_manifest_hardened_passed PASSED
+tests/test_iac_scanner.py::test_terraform_open_ingress_detected PASSED
+tests/test_iac_scanner.py::test_iac_scanner_agent_remediation PASSED
 tests/test_mcp.py::test_mcp_tools_manifest PASSED
 tests/test_mcp.py::test_mcp_call_check_ip_reputation PASSED
 tests/test_mcp.py::test_mcp_call_queue_firewall PASSED
@@ -227,7 +278,7 @@ tests/test_tools.py::test_threat_intel_evaluation PASSED
 tests/test_tools.py::test_notifier_simulation PASSED
 tests/test_tools.py::test_sentinel_push_simulation PASSED
 
-======================== 26 passed in 1.94s ========================
+======================== 34 passed in 2.42s ========================
 ```
 
 ---

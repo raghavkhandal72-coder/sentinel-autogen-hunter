@@ -182,5 +182,53 @@ async def analyze_telemetry_sync(payload: TelemetryPayload):
     return result
 
 
+# ==============================================================================
+# Feature 1: Shift-Left DevSecOps IaC Scanner Endpoint
+# ==============================================================================
+class IaCScanRequest(BaseModel):
+    content: str = Field(..., description="Raw Kubernetes YAML or Terraform HCL text")
+    filename: str = Field(default="manifest.yaml", description="Manifest file name")
+
+
+@app.post("/scan/iac", status_code=status.HTTP_200_OK)
+async def scan_iac_manifest_endpoint(request: IaCScanRequest):
+    """Pre-deployment static security scan for Kubernetes manifests and Terraform templates."""
+    from .iac_scanner import IaCScannerAgent
+
+    scanner = IaCScannerAgent()
+    return scanner.analyze({"content": request.content, "filename": request.filename})
+
+
+# ==============================================================================
+# Feature 2: SQL-Based Cloud Security Posture Management (CSPM) Endpoints
+# ==============================================================================
+class CSPMQueryRequest(BaseModel):
+    sql_query: str | None = Field(
+        default=None, description="Direct read-only ANSI SQL query"
+    )
+    query_prompt: str | None = Field(
+        default=None, description="Natural language security inquiry"
+    )
+
+
+@app.post("/cspm/query", status_code=status.HTTP_200_OK)
+async def query_cspm_endpoint(request: CSPMQueryRequest):
+    """Executes an ANSI SQL or natural-language posture evaluation against cloud assets."""
+    from .cspm_engine import CSPMEngineAgent
+
+    engine = CSPMEngineAgent()
+    return engine.analyze(
+        {"sql_query": request.sql_query, "query_prompt": request.query_prompt}
+    )
+
+
+@app.get("/cspm/posture", status_code=status.HTTP_200_OK)
+async def get_cspm_posture_endpoint():
+    """Returns high-level Cloud Security Posture metrics and CIS benchmark compliance score."""
+    from .tools.cspm_sql import get_cspm_db
+
+    return get_cspm_db().get_posture_summary()
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
