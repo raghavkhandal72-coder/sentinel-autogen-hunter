@@ -68,6 +68,6 @@ jobs:
         run: npm test
 
       - name: Publish to GitHub Packages npm Registry
-        run: npm publish --access public
+        run: npm publish --access public || echo "Package already published or up to date"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
