@@ -47,7 +47,15 @@ def main():
     shield_parser.add_argument("--status", action="store_true", help="Display active shield status & armed tripwires")
     shield_parser.add_argument("--test-injection", action="store_true", help="Simulate an adversarial prompt injection attack against agent")
 
-    # 6. Test Command
+    # 6. MITRE ATT&CK Matrix Command
+    mitre_parser = subparsers.add_parser("mitre", help="Display MITRE ATT&CK Enterprise Matrix coverage")
+    mitre_parser.add_argument("--export-layer", action="store_true", help="Export official MITRE ATT&CK Navigator JSON layer")
+
+    # 7. Adversary Attack Simulation Command
+    sim_parser = subparsers.add_parser("simulate", help="Run automated red-team attack simulation campaign")
+    sim_parser.add_argument("--campaign", choices=["ssh_brute_force", "prompt_injection", "kubernetes_escape", "canary_tripwire", "all"], default="all", help="Attack campaign scenario")
+
+    # 8. Test Command
     subparsers.add_parser("test", help="Run verification test suite")
 
     args = parser.parse_args()
@@ -117,6 +125,39 @@ def main():
             print(f"Tripwires Armed  : {len(agent_shield.active_tripwires)}")
             print(f"Incidents Blocked: {len(agent_shield.interception_history)}")
             print("================================================")
+
+    elif args.command == "mitre":
+        from agents.mitre_mapper import export_mitre_navigator_layer, render_ascii_matrix
+        if args.export_layer:
+            import json
+            layer = export_mitre_navigator_layer()
+            print(json.dumps(layer, indent=2))
+        else:
+            print(render_ascii_matrix())
+
+    elif args.command == "simulate":
+        from agents.attack_simulator import attack_simulator
+        print(f"\n[*] Launching Automated Adversary Emulation Campaign: [{args.campaign.upper()}]")
+        if args.campaign == "all":
+            summary = attack_simulator.run_all_campaigns()
+            print("\n" + "=" * 65)
+            print("   [+] ADVERSARY EMULATION & CONTAINMENT BENCHMARK REPORT")
+            print("=" * 65)
+            print(f"Campaigns Executed       : {summary['total_campaigns_executed']}")
+            print(f"Threats Neutralized      : {summary['threats_neutralized']}")
+            print(f"Mitigation Success Rate  : {summary['mitigation_success_rate']}")
+            print(f"Average Containment Time : {summary['average_containment_latency_ms']} ms")
+            print("-" * 65)
+            for r in summary["results"]:
+                print(f"  * {r['campaign']:<22} [{r['status']}] in {r['containment_latency_ms']}ms -> {r['mitre_technique']}")
+            print("=" * 65)
+        else:
+            res = attack_simulator.simulate_campaign(args.campaign)
+            print(f"[!] Campaign   : {res['campaign']}")
+            print(f"[!] MITRE Ref  : {res.get('mitre_technique', 'N/A')}")
+            print(f"[!] Status     : {res['status']}")
+            print(f"[!] Action     : {res.get('defense_action', 'N/A')}")
+            print(f"[!] Latency    : {res.get('containment_latency_ms', 0)} ms")
 
     elif args.command == "test":
         import pytest

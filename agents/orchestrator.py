@@ -362,6 +362,66 @@ async def serve_dashboard_ui():
     return HTMLResponse(content=DASHBOARD_HTML)
 
 
+# ==============================================================================
+# Feature 8: MITRE ATT&CK Matrix & Navigator Endpoints
+# ==============================================================================
+@app.get("/mitre/coverage", status_code=status.HTTP_200_OK)
+async def get_mitre_coverage_endpoint():
+    """Returns MITRE ATT&CK tactical and technique coverage analytics."""
+    from .mitre_mapper import get_mitre_coverage_matrix
+
+    return get_mitre_coverage_matrix()
+
+
+@app.get("/mitre/navigator", status_code=status.HTTP_200_OK)
+async def get_mitre_navigator_layer_endpoint():
+    """Exports compliant MITRE ATT&CK Navigator Layer v4.5 JSON."""
+    from .mitre_mapper import export_mitre_navigator_layer
+
+    return export_mitre_navigator_layer()
+
+
+# ==============================================================================
+# Feature 9: Automated Adversary Emulation & Attack Simulator Endpoints
+# ==============================================================================
+class SimulationRequest(BaseModel):
+    campaign: str = Field(
+        default="ssh_brute_force",
+        description="Campaign: ssh_brute_force, prompt_injection, kubernetes_escape, canary_tripwire, all",
+    )
+
+
+@app.post("/simulate/campaign", status_code=status.HTTP_200_OK)
+async def run_simulation_campaign_endpoint(request: SimulationRequest):
+    """Executes automated red-team attack simulation campaign to test defense latency & containment."""
+    from .attack_simulator import attack_simulator
+
+    if request.campaign == "all":
+        return attack_simulator.run_all_campaigns()
+    return attack_simulator.simulate_campaign(request.campaign)
+
+
+# ==============================================================================
+# Feature 10: Autonomous Agent Security Shield Scan Endpoint
+# ==============================================================================
+class ShieldScanRequest(BaseModel):
+    prompt: str = Field(..., description="Prompt or user instruction to evaluate")
+    sender_ip: str = Field(default="127.0.0.1", description="Client or caller IP")
+    session_id: str = Field(default="api-session", description="Session identifier")
+
+
+@app.post("/shield/scan", status_code=status.HTTP_200_OK)
+async def scan_agent_shield_endpoint(request: ShieldScanRequest):
+    """Sub-3ms pre-execution validation against prompt injections and jailbreaks."""
+    from .agent_shield import agent_shield
+
+    return agent_shield.scan_prompt_input(
+        prompt=request.prompt,
+        sender_ip=request.sender_ip,
+        session_id=request.session_id,
+    )
+
+
 if __name__ == "__main__":
     import sys
 

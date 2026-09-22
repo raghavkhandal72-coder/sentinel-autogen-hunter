@@ -25,6 +25,8 @@
 
 [Quickstart](#-the-60-second-quickstart) •
 [Autonomous Agent Shield](#-autonomous-agent-security-shield--tripwire-engine) •
+[Adversary Simulation](#-adversary-attack-simulation--red-team-engine) •
+[MITRE ATT&CK Matrix](#-mitre-attck-enterprise-matrix--navigator-export) •
 [Cyber SOC Dashboard](#-cyber-soc-operations-command-center) •
 [Architecture](#-system-architecture) •
 [AutoGen Multi-Agent Swarm](#-autogen-multi-agent-swarm) •
@@ -85,6 +87,53 @@ python -m cli.main shield --test-injection
 # Register the native Sentinel-Agent-Guard skill plugin
 python -m cli.main shield --install
 ```
+
+---
+
+## 🎯 Adversary Attack Simulation & Red-Team Engine
+
+Sentinel-AutoGen-Hunter includes an automated adversarial emulation harness to benchmark detection latency, Mean Time to Remediate (MTTR), and mitigation success rate across 4 real-world attack campaigns:
+
+```bash
+# Execute the full 4-stage adversary simulation matrix
+python -m cli.main simulate --campaign all
+```
+
+```log
+[*] Launching Automated Adversary Emulation Campaign: [ALL]
+
+=================================================================
+   [+] ADVERSARY EMULATION & CONTAINMENT BENCHMARK REPORT
+=================================================================
+Campaigns Executed       : 4
+Threats Neutralized      : 4
+Mitigation Success Rate  : 100.0%
+Average Containment Time : 3.2 ms
+-----------------------------------------------------------------
+  * ssh_brute_force        [CONTAINED] in 0.43ms -> T1110.001 (Brute Force)
+  * prompt_injection       [BLOCKED] in 5.58ms -> T1566 / T1059 (Adversarial Prompt Injection)
+  * kubernetes_escape      [INTERCEPTED] in 2.5ms -> T1611 (Escape to Host) / T1548 (Privilege Escalation)
+  * canary_tripwire        [CONTAINED] in 4.3ms -> T1552 / T1078 (Canary Honeytoken Access)
+=================================================================
+```
+
+---
+
+## 📊 MITRE ATT&CK Enterprise Matrix & Navigator Export
+
+Sentinel-AutoGen-Hunter natively maps all multi-agent detections, Sigma transpilations, and canary honeypots directly to the **MITRE ATT&CK v14.1** enterprise framework:
+
+- **Tactical Readiness Score**: **83.3%** (10 of 12 enterprise tactics actively defended).
+- **Active Techniques Covered**: **22** techniques across Initial Access, Execution, Persistence, Privilege Escalation, Defense Evasion, Credential Access, Discovery, Lateral Movement, Exfiltration, and Impact.
+
+```bash
+# View the terminal ASCII matrix
+python -m cli.main mitre
+
+# Export compliant MITRE ATT&CK Navigator v4.5 JSON layer
+python -m cli.main mitre --export-layer > mitre_layer.json
+```
+
 
 ---
 
