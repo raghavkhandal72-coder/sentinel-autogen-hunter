@@ -1,0 +1,17 @@
+{
+  "name": "sentinel-guard",
+  "version": "1.0.0",
+  "displayName": "Sentinel-AutoGen-Hunter Security Shield",
+  "description": "Zero-Trust Active Defense Supervisor, Prompt-Injection Blocker, and Honeytoken Tripwire for OpenClaw agents.",
+  "author": "Raghav Khandal <raghavkhandal72@gmail.com>",
+  "homepage": "https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter",
+  "license": "Apache-2.0",
+  "entrypoint": "guard.py",
+  "capabilities": [
+    "prompt-inspection",
+    "tool-gatekeeper",
+    "canary-tripwire",
+    "azure-sentinel-streaming",
+    "subsecond-containment"
+  ]
+}
