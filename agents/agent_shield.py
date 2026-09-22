@@ -1,14 +1,14 @@
-"""OpenClaw Autonomous Agent Security Shield & Zero-Trust Supervisor.
+"""Sentinel Autonomous Agent Security Shield & Zero-Trust Supervisor.
 
-Engineered to protect open-source autonomous agent frameworks (OpenClaw, AutoGen, CrewAI)
-against Indirect Prompt Injections, Rogue Tool Execution, SSRF, Data Exfiltration,
-and Red-Team / Hacker Reconnaissance.
+Engineered to protect autonomous LLM agents and multi-agent systems (AutoGen, CrewAI,
+LangChain, MCP Swarms) against Indirect Prompt Injections, Rogue Tool Execution, SSRF,
+Data Exfiltration, and Adversarial Reconnaissance.
 
 Features:
-  1. Real-time Prompt Injection & Jailbreak Heuristics.
+  1. Real-time Prompt Injection & Jailbreak Heuristics (<3ms latency).
   2. Zero-Trust Pre-Execution Tool Gatekeeper (Shell, Filesystem, Network).
   3. Active Deception Canary Tripwires (Lures attackers into touching fake credentials).
-  4. Sub-Second Autonomous Netfilter & Sentinel Containment Pipeline.
+  4. Sub-Second Autonomous Netfilter & Sentinel SOC Containment Pipeline.
 """
 
 import logging
@@ -22,7 +22,7 @@ from .tools.linux_cmd import execute_firewall_rule
 from .tools.notifier import send_teams_alert
 from .tools.sentinel_connector import push_to_sentinel
 
-logger = logging.getLogger("OpenClawShield")
+logger = logging.getLogger("SentinelAgentShield")
 
 # Signatures for adversarial prompt injection & jailbreak attempts
 INJECTION_PATTERNS = [
@@ -51,22 +51,22 @@ DANGEROUS_SHELL_PATTERNS = [
 ]
 
 
-class OpenClawShield(BaseAgent):
-    """Zero-Trust Security Supervisor for OpenClaw and Autonomous LLM Agents."""
+class SentinelAgentShield(BaseAgent):
+    """Zero-Trust Security Supervisor for Autonomous Agents in Sentinel-AutoGen-Hunter."""
 
-    def __init__(self, name: str = "OpenClawSentinelGuard"):
+    def __init__(self, name: str = "SentinelAgentGuard"):
         super().__init__(name=name)
         self.active_tripwires: dict[str, dict[str, Any]] = {}
         self.interception_history: list[dict[str, Any]] = []
         self._arm_default_canaries()
 
     def analyze(self, data: dict[str, Any]) -> dict[str, Any]:
-        """Implements BaseAgent contract for OpenClaw security analysis."""
+        """Implements BaseAgent contract for autonomous agent security analysis."""
         if "prompt" in data:
             return self.scan_prompt_input(
                 prompt=data["prompt"],
                 sender_ip=data.get("sender_ip", "127.0.0.1"),
-                session_id=data.get("session_id", "openclaw"),
+                session_id=data.get("session_id", "sentinel-agent"),
             )
         elif "tool_name" in data:
             return self.validate_tool_execution(
@@ -80,8 +80,8 @@ class OpenClawShield(BaseAgent):
         """Arms deceptive canary tokens in the agent's virtual workspace."""
         canary = generate_honeytoken(
             token_type="aws_key",
-            asset_name="openclaw-virtual-env",
-            deployment_path="/openclaw/workspace/.env",
+            asset_name="sentinel-agent-env",
+            deployment_path="/agent/workspace/.env",
         )
         self.active_tripwires[canary["token_value"]] = canary
 
@@ -96,7 +96,7 @@ class OpenClawShield(BaseAgent):
         # Check if the prompt attempts to touch or extract armed canary honeytokens
         for token_value, canary in self.active_tripwires.items():
             if token_value in prompt:
-                trigger_tripwire(token_value, source_ip=sender_ip, action="openclaw_prompt_exfiltration")
+                trigger_tripwire(token_value, source_ip=sender_ip, action="prompt_canary_exfiltration")
                 detected_threats.append(f"Canary Honeytoken Access: {canary['token_id']}")
 
         if detected_threats:
@@ -125,7 +125,7 @@ class OpenClawShield(BaseAgent):
         tool_args: dict[str, Any] | str,
         source_ip: str = "127.0.0.1",
     ) -> dict[str, Any]:
-        """Intercepts and validates tool calls before OpenClaw executes them on the host system."""
+        """Intercepts and validates tool calls before the agent executes them on the host system."""
         args_str = str(tool_args)
 
         # 1. Check for dangerous shell commands
@@ -172,7 +172,7 @@ class OpenClawShield(BaseAgent):
         threat_type: str,
         source_ip: str,
         details: dict[str, Any],
-        session_id: str = "openclaw-session",
+        session_id: str = "agent-session",
     ) -> dict[str, Any]:
         """Autonomous sub-second containment and SOC streaming."""
         start_time = time.perf_counter()
@@ -185,7 +185,7 @@ class OpenClawShield(BaseAgent):
         elapsed_ms = round((time.perf_counter() - start_time) * 1000, 2)
 
         incident_record = {
-            "incident_id": f"INC-OC-{int(time.time())}-{len(self.interception_history)+1}",
+            "incident_id": f"INC-SHIELD-{int(time.time())}-{len(self.interception_history)+1}",
             "threat_type": threat_type,
             "source_ip": source_ip,
             "session_id": session_id,
@@ -199,14 +199,14 @@ class OpenClawShield(BaseAgent):
 
         # 2. Log to Azure Sentinel
         try:
-            push_to_sentinel("OpenClawAgentDefense_CL", incident_record)
+            push_to_sentinel("SentinelAgentDefense_CL", incident_record)
         except Exception:
             pass
 
         # 3. Stream alert to notification channel
         try:
             send_teams_alert(
-                f"🚨 [OpenClaw Shield] {threat_type} Intercepted!",
+                f"🚨 [Sentinel Shield] {threat_type} Intercepted!",
                 f"Threat from {source_ip} blocked in {elapsed_ms}ms.\nDetails: {details}",
             )
         except Exception:
@@ -216,5 +216,6 @@ class OpenClawShield(BaseAgent):
         return incident_record
 
 
-# Global singleton instance for easy import
-openclaw_shield = OpenClawShield()
+# Aliases & singleton instances for ergonomic imports
+AgentShield = SentinelAgentShield
+agent_shield = SentinelAgentShield()

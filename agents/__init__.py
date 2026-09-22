@@ -9,9 +9,11 @@ from .network_analyzer import NetworkAnalyzerAgent
 from .orchestrator import app
 from .remediation_agent import RemediationAgent
 from .sentinel_auditor import SentinelAuditorAgent
+from .agent_shield import AgentShield, SentinelAgentShield, agent_shield
 from .sigma_engine import SigmaEngineAgent
 
 __all__ = [
+    "AgentShield",
     "AutoGenThreatSwarm",
     "BaseAgent",
     "CSPMEngineAgent",
@@ -19,7 +21,9 @@ __all__ = [
     "IaCScannerAgent",
     "NetworkAnalyzerAgent",
     "RemediationAgent",
+    "SentinelAgentShield",
     "SentinelAuditorAgent",
     "SigmaEngineAgent",
+    "agent_shield",
     "app",
 ]

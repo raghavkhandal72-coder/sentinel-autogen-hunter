@@ -1,0 +1,14 @@
+{
+  "name": "sentinel-agent-guard",
+  "version": "1.0.0",
+  "author": "Raghav Khandal",
+  "description": "Zero-Trust Active Defense Supervisor, Prompt-Injection Blocker, and Honeytoken Tripwire for Autonomous AI Agents.",
+  "entrypoint": "guard.py",
+  "hooks": [
+    "on_user_message",
+    "on_before_tool_execute"
+  ],
+  "requirements": [
+    "sentinel-autogen-hunter>=1.0.0"
+  ]
+}
