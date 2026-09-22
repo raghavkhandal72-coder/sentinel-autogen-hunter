@@ -86,11 +86,14 @@ jobs:
 
       - name: Build & Pack NuGet Package
         run: |
-          dotnet pack clients/dotnet/Sentinel.AutoGen.Hunter.csproj -c Release -o clients/dotnet/nupkgs
+          cd clients/dotnet
+          dotnet build Sentinel.AutoGen.Hunter.csproj -c Release
+          dotnet pack Sentinel.AutoGen.Hunter.csproj -c Release --no-build -o nupkgs
 
       - name: Push to GitHub Packages NuGet Registry
         run: |
-          dotnet nuget push clients/dotnet/nupkgs/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/raghavkhandal72-coder/index.json" --skip-duplicate || echo "NuGet package already published or up to date"
+          cd clients/dotnet
+          dotnet nuget push nupkgs/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/raghavkhandal72-coder/index.json" --skip-duplicate || echo "NuGet package already published or up to date"
 
   publish-maven:
     name: Apache Maven Package (com.sentinel.hunter)

@@ -13,7 +13,7 @@ namespace Sentinel.AutoGen.Hunter
         private readonly HttpClient _httpClient;
         private readonly string _endpoint;
 
-        public SentinelClient(string endpoint = "http://localhost:8000", HttpClient? httpClient = null)
+        public SentinelClient(string endpoint = "http://localhost:8000", HttpClient httpClient = null)
         {
             _endpoint = endpoint.TrimEnd('/');
             _httpClient = httpClient ?? new HttpClient();

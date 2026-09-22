@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <PackageId>Sentinel.AutoGen.Hunter</PackageId>
     <Version>1.4.1</Version>
     <Authors>Raghav Khandal</Authors>
@@ -12,8 +13,6 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>cybersecurity;sentinel;autogen;threat-hunting;deception;ai-agents</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
