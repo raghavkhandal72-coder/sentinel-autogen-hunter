@@ -127,3 +127,59 @@ async def get_sandbox_permissions():
         "network_outbound": "Inspected by Netfilter DOCKER-USER chain",
         "canary_tripwires": "Active (Canary honeytokens deployed in virtual workspace)",
     }
+
+
+# ==============================================================================
+# OpenClaw-Style Pairing Endpoints
+# ==============================================================================
+class PairingApproveRequest(BaseModel):
+    channel: str = Field(default="telegram", description="Target messaging channel")
+    code: str = Field(..., description="6-digit challenge code")
+
+
+class PairingChallengeRequest(BaseModel):
+    channel: str = Field(default="telegram", description="Target messaging channel")
+    sender_id: str = Field(..., description="Sender or device identifier")
+    client_name: str | None = Field(default=None, description="Friendly client name")
+
+
+@gateway_router.get("/pairing/list", status_code=status.HTTP_200_OK)
+async def list_paired_devices():
+    """Lists all approved devices and pending pairing challenges."""
+    from .pairing import pairing_manager
+
+    return pairing_manager.list_pairings()
+
+
+@gateway_router.post("/pairing/challenge", status_code=status.HTTP_201_CREATED)
+async def create_pairing_challenge(request: PairingChallengeRequest):
+    """Generates a 6-digit pairing challenge for an unknown sender or device."""
+    from .pairing import pairing_manager
+
+    return pairing_manager.create_challenge(
+        channel=request.channel,
+        sender_id=request.sender_id,
+        client_name=request.client_name,
+    )
+
+
+@gateway_router.post("/pairing/approve", status_code=status.HTTP_200_OK)
+async def approve_pairing_challenge(request: PairingApproveRequest):
+    """Approves a pending pairing challenge code."""
+    from .pairing import pairing_manager
+
+    res = pairing_manager.approve_challenge(channel=request.channel, code=request.code)
+    if not res.get("success"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=res.get("message"))
+    return res
+
+
+@gateway_router.post("/pairing/revoke", status_code=status.HTTP_200_OK)
+async def revoke_paired_device(identifier: str):
+    """Revokes an approved client device."""
+    from .pairing import pairing_manager
+
+    res = pairing_manager.revoke_pairing(identifier)
+    if not res.get("success"):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res.get("message"))
+    return res

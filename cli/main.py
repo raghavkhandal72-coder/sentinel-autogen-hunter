@@ -66,7 +66,29 @@ def main():
     chat_parser.add_argument("message", type=str, nargs="?", default="Hello OpenClaw! What is your security status?", help="Message to send to OpenClaw")
     chat_parser.add_argument("--channel", default="cli", help="Channel identifier (default cli)")
 
-    # 10. Test Command
+    # 10. OpenClaw Onboarding Wizard Command
+    onboard_parser = subparsers.add_parser("onboard", help="Run interactive OpenClaw-grade onboarding wizard")
+    onboard_parser.add_argument("--non-interactive", action="store_true", help="Run in non-interactive mode using safe defaults")
+    onboard_parser.add_argument("--install-daemon", action="store_true", help="Start background gateway daemon after setup")
+
+    # 11. OpenClaw Device & Channel Pairing Command
+    pair_parser = subparsers.add_parser("pairing", help="Manage multi-channel device pairings and challenges")
+    pair_sub = pair_parser.add_subparsers(dest="pair_action", help="Pairing action")
+
+    pair_sub.add_parser("list", help="List all approved devices and pending challenges")
+    
+    appr_p = pair_sub.add_parser("approve", help="Approve a device pairing code")
+    appr_p.add_argument("channel", type=str, help="Channel name (e.g. telegram, whatsapp, companion)")
+    appr_p.add_argument("code", type=str, help="6-digit pairing code")
+
+    rev_p = pair_sub.add_parser("revoke", help="Revoke an approved client device")
+    rev_p.add_argument("identifier", type=str, help="Client ID or name to revoke")
+
+    chal_p = pair_sub.add_parser("challenge", help="Generate a new pairing challenge")
+    chal_p.add_argument("channel", type=str, help="Channel name")
+    chal_p.add_argument("sender_id", type=str, help="Sender ID")
+
+    # 12. Test Command
     subparsers.add_parser("test", help="Run verification test suite")
 
     args = parser.parse_args()
@@ -192,6 +214,61 @@ def main():
         )
         print(f"[STATUS]: {res.get('status')}")
         print(f"[OPENCLAW ({res.get('latency_ms', 0)}ms)]: {res.get('response')}\n")
+
+    elif args.command == "onboard":
+        from openclaw_engine import run_onboarding_wizard
+        run_onboarding_wizard(
+            non_interactive=args.non_interactive,
+            install_daemon=args.install_daemon,
+        )
+
+    elif args.command == "pairing":
+        from openclaw_engine import pairing_manager
+
+        action = getattr(args, "pair_action", "list")
+        if action == "approve":
+            res = pairing_manager.approve_challenge(channel=args.channel, code=args.code)
+            if res.get("success"):
+                print(f"\n[+] SUCCESS: {res.get('message')}")
+                client = res.get("client", {})
+                print(f"    Client ID    : {client.get('client_id')}")
+                print(f"    Client Name  : {client.get('client_name')}")
+                print(f"    Session Token: {client.get('session_token')}\n")
+            else:
+                print(f"\n[-] ERROR: {res.get('message')}\n")
+
+        elif action == "revoke":
+            res = pairing_manager.revoke_pairing(args.identifier)
+            if res.get("success"):
+                print(f"\n[+] SUCCESS: {res.get('message')}\n")
+            else:
+                print(f"\n[-] ERROR: {res.get('message')}\n")
+
+        elif action == "challenge":
+            chal = pairing_manager.create_challenge(args.channel, args.sender_id)
+            print(f"\n[+] Pairing Challenge Generated:")
+            print(f"    Channel  : {chal['channel']}")
+            print(f"    Sender ID: {chal['sender_id']}")
+            print(f"    Code     : {chal['code']}")
+            print(f"    Expires  : in 10 minutes")
+            print(f"\n    Approve via: sentinel pairing approve {chal['channel']} {chal['code']}\n")
+
+        else:
+            pairings = pairing_manager.list_pairings()
+            print("\n=== OPENCLAW APPROVED DEVICES ===")
+            if not pairings["approved"]:
+                print("  No approved devices yet.")
+            else:
+                for c in pairings["approved"]:
+                    print(f"  * {c.get('client_name', 'Client')} [{c.get('channel', 'unknown')}] - Status: {c.get('status', 'ACTIVE')}")
+
+            print("\n=== PENDING PAIRING CHALLENGES ===")
+            if not pairings["pending"]:
+                print("  No pending pairing requests.")
+            else:
+                for p in pairings["pending"]:
+                    print(f"  * Code: {p['code']} | Channel: {p['channel']} | Sender: {p['sender_id']}")
+            print("===================================\n")
 
     elif args.command == "test":
         import pytest
