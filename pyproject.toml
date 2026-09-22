@@ -17,9 +17,13 @@ dependencies = [
     "requests>=2.31.0",
     "prometheus-client>=0.17.0",
     "python-dotenv>=1.0.0",
+    "customtkinter>=5.2.0",
+    "rich>=13.0.0",
+    "httpx>=0.25.0",
 ]
 
 [project.scripts]
+sentinel = "cli.main:main"
 sentinel-hunter = "cli.main:main"
 
 [project.optional-dependencies]
@@ -35,6 +39,7 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["agents*", "cli*", "collectors*", "gui*", "mcp*", "openclaw_engine*"]
