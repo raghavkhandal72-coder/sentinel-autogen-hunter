@@ -94,6 +94,11 @@ else:
 # Initialize multi-agent swarm
 swarm = AutoGenThreatSwarm()
 
+# Mount OpenClaw Gateway Router
+from openclaw_engine.gateway import gateway_router
+
+app.include_router(gateway_router)
+
 
 # ==============================================================================
 # Pydantic Schemas

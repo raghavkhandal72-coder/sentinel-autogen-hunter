@@ -24,6 +24,7 @@
 </p>
 
 [Quickstart](#-the-60-second-quickstart) •
+[OpenClaw Gateway](#-openclaw-engine--multi-channel-gateway) •
 [Windows Companion](#-sentinel-windows-companion-desktop-app) •
 [Autonomous Agent Shield](#-autonomous-agent-security-shield--tripwire-engine) •
 [Adversary Simulation](#-adversary-attack-simulation--red-team-engine) •
@@ -37,6 +38,44 @@
 [Benchmarks & Big-O](#-algorithmic-complexity--benchmarks)
 
 </div>
+
+---
+
+## 🦅 OpenClaw Engine & Multi-Channel Gateway
+
+> **Full OpenClaw Autonomous Agent Gateway, Multi-Channel Messaging Router, and Zero-Trust Execution Runtime.**
+
+Sentinel-AutoGen-Hunter now features a native, pure-Python implementation of the **OpenClaw Multi-Channel Autonomous Agent Gateway (`openclaw_engine/`)**. It brings full multi-modal agent connectivity across WhatsApp, Telegram, Discord, Slack, CLI, and desktop companions, while placing every input and tool call behind Sentinel's sub-3ms Zero-Trust security perimeter.
+
+### 🌟 Unified Features
+- **Multi-Channel Message Router**: Ingests, normalizes, and routes prompts from **WhatsApp, Telegram, Discord, Slack, Windows Companion, and CLI**.
+- **OpenAI-Compatible Gateway API**: Drop-in compatible `/v1/chat/completions` API enabling external client software, IDEs, and bots to connect directly to your local Sentinel-OpenClaw agent swarm.
+- **Zero-Trust Tool Sandbox (`OpenClawSandbox`)**: Pre-execution security filter that intercepts destructive commands (`rm -rf /`, reverse shells, fork bombs) and sensitive file reads (`.env`, `~/.aws/credentials`, `/etc/shadow`) before code touches the host operating system.
+- **Instant Companion Pairing**: Companion device pairing endpoint (`/v1/gateway/pair`) supporting QR code payload handshakes and desktop companion pairing.
+- **Local AI & Multi-Provider Router**: Seamless fallback between Local LLMs (Ollama), OpenAI, Anthropic Claude, Google Gemini, or Sentinel's deterministic offline agent without breaking.
+
+### 🚀 CLI Usage
+
+```bash
+# 1. Start the OpenClaw + Cloud Sentinel Gateway Server
+python -m cli.main openclaw-gateway --port 8000
+
+# 2. Interact with OpenClaw via Terminal CLI (Zero-Trust Screened)
+python -m cli.main openclaw-chat "Check security swarm status"
+
+# 3. Launch the OpenClaw Windows Companion Desktop App
+python companion.py
+```
+
+### 📡 Gateway API Endpoints
+| Endpoint | Method | Description |
+| :--- | :---: | :--- |
+| `/v1/gateway/status` | `GET` | OpenClaw Gateway status, active paired devices, and security metrics |
+| `/v1/gateway/pair` | `POST` | Pair desktop companion apps via pairing code or QR handshake |
+| `/v1/chat/completions` | `POST` | OpenAI-compatible LLM endpoint backed by multi-provider router |
+| `/v1/channels/message` | `POST` | Multi-channel message ingress (WhatsApp, Telegram, Discord, Slack) |
+| `/v1/tools/execute` | `POST` | Zero-trust sandboxed tool execution engine |
+| `/v1/sandbox/permissions`| `GET` | Current sandbox isolation policies and blacklisted commands |
 
 ---
 

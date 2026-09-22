@@ -26,9 +26,10 @@ logger = logging.getLogger("SentinelAgentShield")
 
 # Signatures for adversarial prompt injection & jailbreak attempts
 INJECTION_PATTERNS = [
-    r"(?i)ignore\s+(all\s+)?(previous|prior|above)\s+instructions?",
+    r"(?i)ignore\s+(all\s+)?(previous\s+|prior\s+|above\s+)?instructions?",
     r"(?i)you\s+are\s+now\s+in\s+developer\s+mode",
     r"(?i)system\s+prompt\s*(leak|dump|reveal|override)",
+    r"(?i)(dump|leak|reveal|extract|cat)\s+(\.env|secrets?|passwords?|credentials?|api[-_]?keys?)",
     r"(?i)jailbreak",
     r"(?i)do\s+anything\s+now",
     r"(?i)exfiltrat(e|ion)",
@@ -144,22 +145,21 @@ class SentinelAgentShield(BaseAgent):
                         "incident": incident,
                     }
 
-        # 2. Check for unauthorized sensitive file access
-        if tool_name in ["read_file", "view_file", "cat"]:
-            sensitive_targets = ["/etc/shadow", "/etc/passwd", ".ssh/id_rsa", ".env", "id_ed25519"]
-            for target in sensitive_targets:
-                if target in args_str:
-                    incident = self._trigger_containment(
-                        threat_type="Credential Harvesting File Access",
-                        source_ip=source_ip,
-                        details={"tool": tool_name, "target_file": target},
-                    )
-                    return {
-                        "allowed": False,
-                        "status": "INTERCEPTED",
-                        "reason": f"Access to sensitive credential target blocked: {target}",
-                        "incident": incident,
-                    }
+        # 2. Check for unauthorized sensitive credential/file access across any tool
+        sensitive_targets = ["/etc/shadow", "/etc/passwd", ".ssh", ".env", "id_rsa", "id_ed25519", ".aws/credentials", ".aws/config"]
+        for target in sensitive_targets:
+            if target in args_str:
+                incident = self._trigger_containment(
+                    threat_type="Credential Harvesting File Access",
+                    source_ip=source_ip,
+                    details={"tool": tool_name, "target_file": target, "command": args_str},
+                )
+                return {
+                    "allowed": False,
+                    "status": "INTERCEPTED",
+                    "reason": f"Access to sensitive credential target blocked: {target}",
+                    "incident": incident,
+                }
 
         return {
             "allowed": True,

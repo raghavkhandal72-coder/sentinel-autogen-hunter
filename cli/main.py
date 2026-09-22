@@ -58,7 +58,15 @@ def main():
     # 8. Desktop Companion App Command
     subparsers.add_parser("companion", help="Launch Sentinel Windows Companion Desktop App")
 
-    # 9. Test Command
+    # 9. OpenClaw Commands
+    gw_parser = subparsers.add_parser("openclaw-gateway", help="Start OpenClaw Autonomous Agent Gateway")
+    gw_parser.add_argument("--port", type=int, default=8000, help="Gateway port (default 8000)")
+
+    chat_parser = subparsers.add_parser("openclaw-chat", help="Interactive terminal chat with OpenClaw Agent")
+    chat_parser.add_argument("message", type=str, nargs="?", default="Hello OpenClaw! What is your security status?", help="Message to send to OpenClaw")
+    chat_parser.add_argument("--channel", default="cli", help="Channel identifier (default cli)")
+
+    # 10. Test Command
     subparsers.add_parser("test", help="Run verification test suite")
 
     args = parser.parse_args()
@@ -166,6 +174,24 @@ def main():
         from gui.companion_app import run_companion
         print("\n[*] Launching Sentinel Windows Companion Desktop Application...")
         run_companion()
+
+    elif args.command == "openclaw-gateway":
+        import uvicorn
+        from agents.orchestrator import app
+        print(f"\n[*] Starting OpenClaw + Cloud Sentinel Gateway on http://0.0.0.0:{args.port}")
+        print("[*] Compatible with OpenClaw Windows Companion & Multi-Channel Messaging RPC")
+        uvicorn.run(app, host="0.0.0.0", port=args.port)
+
+    elif args.command == "openclaw-chat":
+        from openclaw_engine import channel_manager
+        print(f"\n[USER -> OPENCLAW ({args.channel})]: {args.message}")
+        res = channel_manager.handle_incoming_message(
+            channel=args.channel,
+            sender_id="cli_user",
+            content=args.message,
+        )
+        print(f"[STATUS]: {res.get('status')}")
+        print(f"[OPENCLAW ({res.get('latency_ms', 0)}ms)]: {res.get('response')}\n")
 
     elif args.command == "test":
         import pytest
