@@ -24,6 +24,7 @@
 </p>
 
 [Quickstart](#-the-60-second-quickstart) •
+[Download & Install](#-download--installation-hub-openclaw-style) •
 [OpenClaw Gateway](#-openclaw-engine--multi-channel-gateway) •
 [Windows Companion](#-sentinel-windows-companion-desktop-app) •
 [Autonomous Agent Shield](#-autonomous-agent-security-shield--tripwire-engine) •
@@ -38,6 +39,21 @@
 [Benchmarks & Big-O](#-algorithmic-complexity--benchmarks)
 
 </div>
+
+---
+
+## 📥 Download & Installation Hub (OpenClaw-Style)
+
+> **Install Sentinel-AutoGen-Hunter in seconds via 1-liner scripts, standalone desktop launchers, or the interactive web portal.**
+
+| Platform / Method | Command / Download | Requirements |
+| :--- | :--- | :--- |
+| **🪟 Windows (1-Liner)** | `irm https://raw.githubusercontent.com/raghavkhandal72-coder/sentinel-autogen-hunter/main/install.ps1 \| iex` | PowerShell, Python 3.10+ |
+| **🍎 macOS & 🐧 Linux (1-Liner)** | `curl -fsSL https://raw.githubusercontent.com/raghavkhandal72-coder/sentinel-autogen-hunter/main/install.sh \| bash` | Bash, Python 3.10+ |
+| **💻 Windows 1-Click Launcher** | Download [SentinelCompanion-Setup.bat](https://raw.githubusercontent.com/raghavkhandal72-coder/sentinel-autogen-hunter/main/SentinelCompanion-Setup.bat) and double-click | Windows 10/11 |
+| **🌐 Interactive Web Portal** | Visit `http://localhost:8000/install` (or `/`) | Any modern browser |
+| **📦 pip Package Manager** | `pip install -U git+https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter.git` | Python 3.10+ |
+| **⚡ Hackable Git Clone** | `git clone https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter.git` | Git, Python 3.10+ |
 
 ---
 

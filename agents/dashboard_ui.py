@@ -70,6 +70,9 @@ DASHBOARD_HTML = """<!DOCTYPE html>
             <span class="px-3 py-1 rounded bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-400 font-mono">
                 <i class="fa-solid fa-shield-halved mr-1"></i> Zero-Trust: <span class="font-bold">ACTIVE</span>
             </span>
+            <a href="/install" class="px-3 py-1.5 rounded bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-xs text-emerald-400 font-bold transition flex items-center gap-1.5">
+                <i class="fa-solid fa-download"></i> Install Hub
+            </a>
             <a href="https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter" target="_blank" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs text-white transition flex items-center gap-2">
                 <i class="fa-brands fa-github"></i> Star on GitHub
             </a>

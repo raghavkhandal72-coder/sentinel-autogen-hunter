@@ -357,7 +357,7 @@ async def trigger_tripwire_endpoint(request: HoneytokenTripwireRequest):
 
 
 # ==============================================================================
-# Feature 7: Cyber SOC Operations Command Center Dashboard
+# Feature 7: Cyber SOC Operations Command Center & Install Portal
 # ==============================================================================
 @app.get("/dashboard", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
 async def serve_dashboard_ui():
@@ -365,6 +365,15 @@ async def serve_dashboard_ui():
     from .dashboard_ui import DASHBOARD_HTML
 
     return HTMLResponse(content=DASHBOARD_HTML)
+
+
+@app.get("/install", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
+@app.get("/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
+async def serve_install_ui():
+    """Serves the OpenClaw-style interactive download and installation hub."""
+    from .install_ui import INSTALL_HTML
+
+    return HTMLResponse(content=INSTALL_HTML)
 
 
 # ==============================================================================
