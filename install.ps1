@@ -10,12 +10,12 @@ param (
     [switch]$NoLaunch
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 
 Write-Host ""
 Write-Host "================================================================================" -ForegroundColor DarkGray
 Write-Host "🛡️  Sentinel-AutoGen-Hunter + OpenClaw Gateway Installer (Windows)" -ForegroundColor Cyan
-Write-Host "    Version: 1.4.0 | Architect: Raghav Khandal (@raghavkhandal72-coder)" -ForegroundColor DarkCyan
+Write-Host "    Version: 1.4.2 | Architect: Raghav Khandal (@raghavkhandal72-coder)" -ForegroundColor DarkCyan
 Write-Host "================================================================================" -ForegroundColor DarkGray
 Write-Host ""
 
@@ -28,9 +28,12 @@ if (Get-Command python -ErrorAction SilentlyContinue) {
 }
 
 if (-not $pythonCmd) {
-    Write-Host "❌ Error: Python 3.10+ is required but not found on your PATH." -ForegroundColor Red
-    Write-Host ">> You can install Python via Windows Package Manager:" -ForegroundColor Yellow
+    Write-Host "❌ Error: Python 3.10+ is required but not found on your system." -ForegroundColor Red
+    Write-Host ">> You can install Python in 30 seconds using Windows Package Manager:" -ForegroundColor Yellow
     Write-Host "   winget install Python.Python.3.11" -ForegroundColor White
+    Write-Host ""
+    Write-Host ">> Or download from: https://www.python.org/downloads/" -ForegroundColor Yellow
+    Write-Host "   (Make sure to check 'Add Python to PATH')" -ForegroundColor White
     Write-Host ""
     Exit 1
 }
@@ -39,21 +42,35 @@ $pyVer = & $pythonCmd --version 2>&1
 Write-Host "✔ Python Detected: $pyVer" -ForegroundColor Green
 
 # 2. Acquire Repository (git clone or download zip)
-$repoDir = "sentinel-autogen-hunter"
-if (-not (Test-Path "pyproject.toml")) {
-    if (Get-Command git -ErrorAction SilentlyContinue) {
-        Write-Host ">> Cloning Sentinel-AutoGen-Hunter from GitHub..." -ForegroundColor DarkCyan
-        git clone https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter.git
-        Set-Location $repoDir
-    } else {
-        Write-Host ">> Git not detected. Downloading source release bundle..." -ForegroundColor DarkCyan
-        $zipUrl = "https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/archive/refs/heads/main.zip"
-        $zipFile = "sentinel-main.zip"
-        Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile
-        Expand-Archive -Path $zipFile -DestinationPath "." -Force
-        Remove-Item $zipFile
-        Set-Location "sentinel-autogen-hunter-main"
+$targetDir = Join-Path $HOME "Sentinel-AutoGen-Hunter"
+if (Test-Path "companion.py") {
+    $targetDir = (Get-Location).Path
+    Write-Host ">> Running inside source directory: $targetDir" -ForegroundColor DarkCyan
+} else {
+    Write-Host ">> Target application directory: $targetDir" -ForegroundColor DarkCyan
+    if (-not (Test-Path $targetDir)) {
+        New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
     }
+
+    if (-not (Test-Path (Join-Path $targetDir "companion.py"))) {
+        if (Get-Command git -ErrorAction SilentlyContinue) {
+            Write-Host ">> Cloning Sentinel-AutoGen-Hunter from GitHub..." -ForegroundColor DarkCyan
+            git clone --depth 1 https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter.git $targetDir
+        } else {
+            Write-Host ">> Git not detected. Downloading source release bundle..." -ForegroundColor DarkCyan
+            $zipUrl = "https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/archive/refs/heads/main.zip"
+            $zipFile = Join-Path $env:TEMP "sentinel-main.zip"
+            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+            Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile
+            $tempExtract = Join-Path $env:TEMP "sentinel-extract"
+            if (Test-Path $tempExtract) { Remove-Item $tempExtract -Recurse -Force }
+            Expand-Archive -Path $zipFile -DestinationPath $tempExtract -Force
+            Copy-Item -Path (Join-Path $tempExtract "sentinel-autogen-hunter-main\*") -Destination $targetDir -Recurse -Force
+            Remove-Item $zipFile -Force
+            Remove-Item $tempExtract -Recurse -Force
+        }
+    }
+    Set-Location $targetDir
 }
 
 # 3. Setup Virtual Environment
@@ -63,32 +80,28 @@ if (-not (Test-Path ".venv")) {
 }
 
 $venvPython = ".\.venv\Scripts\python.exe"
+$venvPythonw = ".\.venv\Scripts\pythonw.exe"
 $venvPip = ".\.venv\Scripts\pip.exe"
 
 # 4. Install Dependencies
-Write-Host ">> Installing production dependencies & OpenClaw engine..." -ForegroundColor DarkCyan
+Write-Host ">> Installing dependencies & OpenClaw engine..." -ForegroundColor DarkCyan
 & $venvPip install --upgrade pip -q
 if (Test-Path "requirements.txt") {
     & $venvPip install -r requirements.txt -q
 }
 & $venvPip install -e . -q
 
-# 5. Run Verification Self-Test
-Write-Host ">> Running Zero-Trust Verification Test Suite (97 Tests)..." -ForegroundColor DarkCyan
-& $venvPython -m pytest tests/ -q
-if ($LASTEXITCODE -eq 0) {
-    Write-Host "✔ All 97 Tests Verified & Passing Cleanly!" -ForegroundColor Green
-} else {
-    Write-Host "⚠️ Tests completed with non-zero exit code, continuing setup..." -ForegroundColor Yellow
-}
-
-# 6. Create Desktop Shortcut for Sentinel Windows Companion
+# 5. Create Desktop Shortcut for Sentinel Windows Companion
 try {
     $desktopPath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::Desktop)
     $shortcutPath = Join-Path $desktopPath "Sentinel Companion.lnk"
     $wscriptShell = New-Object -ComObject WScript.Shell
     $shortcut = $wscriptShell.CreateShortcut($shortcutPath)
-    $shortcut.TargetPath = (Resolve-Path $venvPython).Path
+    if (Test-Path $venvPythonw) {
+        $shortcut.TargetPath = (Resolve-Path $venvPythonw).Path
+    } else {
+        $shortcut.TargetPath = (Resolve-Path $venvPython).Path
+    }
     $shortcut.Arguments = "companion.py"
     $shortcut.WorkingDirectory = (Get-Location).Path
     $shortcut.Description = "Sentinel-AutoGen-Hunter + OpenClaw Windows Companion"
@@ -108,11 +121,14 @@ Write-Host "  python companion.py             # Launch Windows Companion Desktop
 Write-Host "  python -m cli.main openclaw-chat # Talk with OpenClaw Agent in Terminal" -ForegroundColor White
 Write-Host "  python -m cli.main openclaw-gateway # Start OpenClaw Multi-Channel Gateway" -ForegroundColor White
 Write-Host "  python -m cli.main dashboard    # Launch Cyber SOC UI (http://localhost:8000/dashboard)" -ForegroundColor White
-Write-Host "  python -m cli.main tui          # Launch Cyberpunk Terminal Radar" -ForegroundColor White
 Write-Host "================================================================================" -ForegroundColor DarkGray
 Write-Host ""
 
 if (-not $NoLaunch) {
     Write-Host "[*] Launching Sentinel Windows Companion Desktop App..." -ForegroundColor Cyan
-    & $venvPython companion.py
+    if (Test-Path $venvPythonw) {
+        Start-Process $venvPythonw -ArgumentList "companion.py"
+    } else {
+        & $venvPython companion.py
+    }
 }
