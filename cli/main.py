@@ -55,7 +55,10 @@ def main():
     sim_parser = subparsers.add_parser("simulate", help="Run automated red-team attack simulation campaign")
     sim_parser.add_argument("--campaign", choices=["ssh_brute_force", "prompt_injection", "kubernetes_escape", "canary_tripwire", "all"], default="all", help="Attack campaign scenario")
 
-    # 8. Test Command
+    # 8. Desktop Companion App Command
+    subparsers.add_parser("companion", help="Launch Sentinel Windows Companion Desktop App")
+
+    # 9. Test Command
     subparsers.add_parser("test", help="Run verification test suite")
 
     args = parser.parse_args()
@@ -158,6 +161,11 @@ def main():
             print(f"[!] Status     : {res['status']}")
             print(f"[!] Action     : {res.get('defense_action', 'N/A')}")
             print(f"[!] Latency    : {res.get('containment_latency_ms', 0)} ms")
+
+    elif args.command == "companion":
+        from gui.companion_app import run_companion
+        print("\n[*] Launching Sentinel Windows Companion Desktop Application...")
+        run_companion()
 
     elif args.command == "test":
         import pytest

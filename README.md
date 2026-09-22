@@ -24,6 +24,7 @@
 </p>
 
 [Quickstart](#-the-60-second-quickstart) •
+[Windows Companion](#-sentinel-windows-companion-desktop-app) •
 [Autonomous Agent Shield](#-autonomous-agent-security-shield--tripwire-engine) •
 [Adversary Simulation](#-adversary-attack-simulation--red-team-engine) •
 [MITRE ATT&CK Matrix](#-mitre-attck-enterprise-matrix--navigator-export) •
@@ -134,6 +135,28 @@ python -m cli.main mitre
 python -m cli.main mitre --export-layer > mitre_layer.json
 ```
 
+
+---
+
+## 🪟 Sentinel Windows Companion Desktop App
+
+> **A modern, native Windows 11 companion desktop application providing local gateway management, multi-agent swarm connectivity, real-time agent shield testing, and 1-click adversary attack benchmarking.**
+
+```bash
+# Launch the Sentinel Windows Companion GUI
+python companion.py
+
+# Or launch via CLI
+python -m cli.main companion
+```
+
+### ✨ Native Windows 11 Desktop Features
+- 🌐 **Local Gateway & Swarm Control**: 1-click local swarm startup on port 8000, direct bearer token connectivity, and local network sensor discovery.
+- 🛡️ **Autonomous Agent Shield Test**: Interactive prompt injection scanner and destructive tool execution gatekeeper with real-time latency readout (<1.5ms).
+- 🪤 **Canary Tripwire Manager**: Deploy and inspect deceptive AWS decoy keys and GitHub tokens with live intrusion containment.
+- 🎯 **Red-Team Attack Simulator**: Execute 4-stage adversary attack campaigns and benchmark Mean Time to Remediate (MTTR) live in the GUI.
+- 📊 **MITRE ATT&CK Matrix Explorer**: Interactive 83.3% tactical readiness scoring and 1-click Navigator v4.5 layer JSON export.
+- 🎨 **Fluent Aesthetics**: Native Windows 11 light & dark mode styling built with CustomTkinter.
 
 ---
 
