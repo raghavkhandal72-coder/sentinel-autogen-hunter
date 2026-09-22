@@ -9,6 +9,7 @@
 [![Multi-SIEM Sigma](https://img.shields.io/badge/Sigma%20Standard-KQL%20%7C%20SPL%20%7C%20ES%7CQL-blueviolet?style=for-the-badge&logo=siem)](https://github.com/SigmaHQ/sigma)
 [![Active Deception](https://img.shields.io/badge/Active%20Deception-Canary%20Tripwires-orange?style=for-the-badge&logo=shield)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter)
 [![Cyber SOC UI](https://img.shields.io/badge/Console-Cyber%20SOC%20Dashboard-00ff88?style=for-the-badge)](http://localhost:8000/dashboard)
+[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Containers%20%7C%20npm-blue?style=for-the-badge&logo=github)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/packages)
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?style=for-the-badge&logo=python)](https://python.org)
 [![Zero-Trust](https://img.shields.io/badge/architecture-zero--trust-red?style=for-the-badge&logo=securityscorecard)](https://csrc.nist.gov/publications/detail/sp/800-207/final)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
@@ -25,6 +26,7 @@
 
 [Quickstart](#-the-60-second-quickstart) •
 [Download & Install](#-download--installation-hub-openclaw-style) •
+[GitHub Packages](#-github-packages-registry--containers--npm) •
 [OpenClaw Gateway](#-openclaw-engine--multi-channel-gateway) •
 [Windows Companion](#-sentinel-windows-companion-desktop-app) •
 [Autonomous Agent Shield](#-autonomous-agent-security-shield--tripwire-engine) •
@@ -52,8 +54,48 @@
 | **🍎 macOS & 🐧 Linux (1-Liner)** | `curl -fsSL https://raw.githubusercontent.com/raghavkhandal72-coder/sentinel-autogen-hunter/main/install.sh \| bash` | Bash, Python 3.10+ |
 | **💻 Windows 1-Click Launcher** | Download [SentinelCompanion-Setup.bat](https://raw.githubusercontent.com/raghavkhandal72-coder/sentinel-autogen-hunter/main/SentinelCompanion-Setup.bat) and double-click | Windows 10/11 |
 | **🌐 Interactive Web Portal** | Visit `http://localhost:8000/install` (or `/`) | Any modern browser |
-| **📦 pip Package Manager** | `pip install -U git+https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter.git` | Python 3.10+ |
+| **🐳 Docker Container (GHCR)** | `docker pull ghcr.io/raghavkhandal72-coder/sentinel-autogen-hunter:latest` | Docker Engine |
+| **📦 npm Package** | `npx @raghavkhandal72-coder/sentinel-autogen-hunter` | Node.js 18+ |
 | **⚡ Hackable Git Clone** | `git clone https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter.git` | Git, Python 3.10+ |
+
+---
+
+## 📦 GitHub Packages Registry (Containers & npm)
+
+> **Official enterprise container images and Node.js client packages hosted on GitHub Packages.**
+
+### 🐳 1. Containers (GitHub Container Registry - GHCR)
+The complete Threat Orchestrator and OpenClaw Gateway are available as a multi-arch, zero-trust hardened container image:
+
+```bash
+# Pull the latest container image from GHCR
+docker pull ghcr.io/raghavkhandal72-coder/sentinel-autogen-hunter:latest
+
+# Run the containerized Threat Orchestrator & OpenClaw Gateway
+docker run -d -p 8000:8000 \
+  -e HUNTER_MODE=autonomous \
+  --name sentinel-hunter \
+  ghcr.io/raghavkhandal72-coder/sentinel-autogen-hunter:latest
+```
+
+### 🔴 2. npm Registry (Node.js SDK & CLI)
+Connect to the Gateway API or run the interactive terminal scanner using Node.js:
+
+```bash
+# Run the interactive CLI via npx (zero local install required)
+npx @raghavkhandal72-coder/sentinel-autogen-hunter status
+
+# Or install the SDK into your Node.js application
+npm install @raghavkhandal72-coder/sentinel-autogen-hunter
+```
+
+```javascript
+import { SentinelClient } from '@raghavkhandal72-coder/sentinel-autogen-hunter';
+
+const client = new SentinelClient({ baseUrl: 'http://localhost:8000' });
+const status = await client.getGatewayStatus();
+console.log('OpenClaw Gateway & Sentinel Swarm:', status.status);
+```
 
 ---
 

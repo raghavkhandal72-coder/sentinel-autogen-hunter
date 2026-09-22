@@ -1,0 +1,35 @@
+{
+  "name": "@raghavkhandal72-coder/sentinel-autogen-hunter",
+  "version": "1.4.1",
+  "description": "Cloud-Native Autonomous Threat Hunter & OpenClaw Agent Gateway Client SDK",
+  "main": "index.js",
+  "bin": {
+    "sentinel-hunter": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "node -e \"const { SentinelClient } = require('./index.js'); console.log('SentinelClient SDK loaded successfully.');\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "keywords": [
+    "sentinel",
+    "autogen",
+    "openclaw",
+    "cybersecurity",
+    "threat-hunter",
+    "agent-shield",
+    "zero-trust",
+    "security-copilot"
+  ],
+  "author": "Raghav Khandal <raghavkhandal72@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/issues"
+  },
+  "homepage": "https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter#readme"
+}
