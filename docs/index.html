@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Search Engine SEO Meta Tags -->
+    <title>Sentinel-AutoGen-Hunter | Autonomous Cloud Threat Hunting & Deception Grid</title>
+    <meta name="title" content="Sentinel-AutoGen-Hunter | Autonomous Cloud Threat Hunting & Deception Grid">
+    <meta name="description" content="Autonomous Multi-Agent AI Threat Hunting & Incident Response Swarm engineered with Microsoft AutoGen, Azure Sentinel, and MCP. Sub-second Netfilter containment, Canary honeytokens, universal Sigma transpilation, and OpenClaw multi-channel gateway.">
+    <meta name="keywords" content="Sentinel-AutoGen-Hunter, AutoGen, Microsoft Sentinel, threat hunting, cybersecurity, zero trust, MITRE ATT&CK, AI agents, MCP, SOC automation, Raghav Khandal, OpenClaw">
+    <meta name="author" content="Raghav Khandal">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://raghavkhandal72-coder.github.io/sentinel-autogen-hunter/">
+
+    <!-- Open Graph / Facebook / LinkedIn / Discord -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://raghavkhandal72-coder.github.io/sentinel-autogen-hunter/">
+    <meta property="og:title" content="Sentinel-AutoGen-Hunter | Autonomous Cloud Threat Hunting & Deception Grid">
+    <meta property="og:description" content="Enterprise Multi-Agent AI Threat Hunting platform. Built with Microsoft AutoGen, Sentinel KQL, Canary tripwires, and OpenClaw Gateway.">
+    <meta property="og:site_name" content="Sentinel-AutoGen-Hunter">
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://raghavkhandal72-coder.github.io/sentinel-autogen-hunter/">
+    <meta name="twitter:title" content="Sentinel-AutoGen-Hunter | Enterprise AI Threat Hunter">
+    <meta name="twitter:description" content="Sub-second Netfilter containment, Canary honeytokens, universal Sigma transpilation, and OpenClaw multi-channel gateway.">
+
+    <!-- Schema.org JSON-LD Structured Data for Google Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Sentinel-AutoGen-Hunter",
+      "operatingSystem": "Windows 10/11, Linux, macOS, Docker",
+      "applicationCategory": "SecurityApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Raghav Khandal",
+        "url": "https://github.com/raghavkhandal72-coder"
+      },
+      "description": "Autonomous Multi-Agent AI Threat Hunting & Incident Response Swarm engineered with AutoGen, Azure Sentinel, and Model Context Protocol (MCP).",
+      "url": "https://raghavkhandal72-coder.github.io/sentinel-autogen-hunter/",
+      "downloadUrl": "https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/releases"
+    }
+    </script>
+
+    <!-- Tailwind CSS & FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+        }
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+        }
+        .glow-effect {
+            box-shadow: 0 0 45px -10px rgba(16, 185, 129, 0.35);
+        }
+        .cyber-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(51, 65, 85, 0.6);
+        }
+        .cyber-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.15);
+        }
+        .active-tab {
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #34d399 !important;
+            border-color: #10b981 !important;
+        }
+    </style>
+</head>
+<body class="cyber-grid min-h-screen flex flex-col selection:bg-emerald-500 selection:text-slate-950">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/80 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-shield-halved text-xl"></i>
+                </div>
+                <div>
+                    <span class="font-orbitron font-black text-lg tracking-wider text-white">SENTINEL</span>
+                    <span class="text-xs font-mono text-emerald-400 block -mt-1 tracking-widest">AUTOGEN HUNTER</span>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
+                <a href="#install" class="hover:text-emerald-400 transition-colors">Install Hub</a>
+                <a href="#packages" class="hover:text-emerald-400 transition-colors">Packages</a>
+                <a href="#features" class="hover:text-emerald-400 transition-colors">Architecture</a>
+                <a href="https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/releases" target="_blank" class="hover:text-emerald-400 transition-colors">Releases</a>
+                <a href="https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter" target="_blank" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-emerald-500 text-white transition-all shadow-sm">
+                    <i class="fa-brands fa-github text-base"></i>
+                    <span>GitHub</span>
+                    <span class="text-xs bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-mono font-bold">v1.4.1</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium mb-6">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                ENTERPRISE ZERO-TRUST DEFENSE • v1.4.1 LIVE
+            </div>
+            
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+                Autonomous Threat Hunter &amp; <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">OpenClaw Gateway</span>
+            </h1>
+            
+            <p class="text-gray-300 text-base md:text-lg leading-relaxed mb-8">
+                Autonomous Multi-Agent Threat Hunting & Incident Response Swarm engineered with Microsoft AutoGen, Azure Sentinel, and MCP. Connects across WhatsApp, Telegram, Discord, and Windows Companion with sub-second Netfilter isolation.
+            </p>
+
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="#install" class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold text-sm flex items-center gap-2 hover:opacity-95 transition-opacity shadow-lg shadow-emerald-500/25">
+                    <i class="fa-solid fa-download"></i> Get Started
+                </a>
+                <a href="https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter" target="_blank" class="px-6 py-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-slate-600 text-white font-semibold text-sm flex items-center gap-2 transition-colors">
+                    <i class="fa-brands fa-github text-base"></i> View on GitHub
+                </a>
+            </div>
+        </div>
+
+        <!-- Installation & Packages Hub -->
+        <div id="install" class="cyber-card rounded-2xl p-6 md:p-8 mb-16 glow-effect">
+            <div class="flex flex-wrap items-center justify-between pb-4 mb-6 border-b border-slate-800 gap-3">
+                <div class="flex flex-wrap items-center gap-2" id="modeTabs">
+                    <button onclick="setMode('apps')" id="tab-apps" class="px-4 py-2 rounded-lg text-sm font-semibold border border-transparent text-gray-400 hover:text-white transition-all active-tab">
+                        <i class="fa-solid fa-desktop mr-1.5"></i> Desktop Apps
+                    </button>
+                    <button onclick="setMode('oneliner')" id="tab-oneliner" class="px-4 py-2 rounded-lg text-sm font-semibold border border-transparent text-gray-400 hover:text-white transition-all">
+                        <i class="fa-solid fa-terminal mr-1.5"></i> 1-Liner Scripts
+                    </button>
+                    <button onclick="setMode('packages')" id="tab-packages" class="px-4 py-2 rounded-lg text-sm font-semibold border border-transparent text-gray-400 hover:text-white transition-all">
+                        <i class="fa-solid fa-box-archive mr-1.5"></i> GitHub Packages (5 Registries)
+                    </button>
+                    <button onclick="setMode('pip')" id="tab-pip" class="px-4 py-2 rounded-lg text-sm font-semibold border border-transparent text-gray-400 hover:text-white transition-all">
+                        <i class="fa-brands fa-python mr-1.5"></i> pip
+                    </button>
+                    <button onclick="setMode('hackable')" id="tab-hackable" class="px-4 py-2 rounded-lg text-sm font-semibold border border-transparent text-gray-400 hover:text-white transition-all">
+                        <i class="fa-solid fa-code mr-1.5"></i> Source / Git
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 1: Desktop Apps -->
+            <div id="content-apps" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-slate-900/80 border border-emerald-500/30 rounded-xl p-6 flex flex-col justify-between hover:border-emerald-400 transition-all">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-bold text-lg text-white flex items-center gap-2">
+                                    <i class="fa-brands fa-windows text-cyan-400"></i> Windows
+                                </span>
+                                <span class="text-xs bg-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded">Featured</span>
+                            </div>
+                            <p class="text-xs text-gray-400 mb-6">Windows 10 / 11 · x64 & ARM64 · Companion App v1.4.1</p>
+                        </div>
+                        <a href="https://raw.githubusercontent.com/raghavkhandal72-coder/sentinel-autogen-hunter/main/SentinelCompanion-Setup.bat" download class="w-full py-2.5 px-4 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 hover:opacity-95 transition-opacity shadow-lg">
+                            <i class="fa-solid fa-download"></i> Download Windows Launcher (.bat)
+                        </a>
+                    </div>
+
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-6 flex flex-col justify-between hover:border-slate-700 transition-all">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-bold text-lg text-white flex items-center gap-2">
+                                    <i class="fa-brands fa-apple text-gray-200"></i> macOS
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-400 mb-6">macOS 12+ · Apple Silicon (M1/M2/M3) & Intel · v1.4.1</p>
+                        </div>
+                        <button onclick="setMode('oneliner'); setModeOs('unix')" class="w-full py-2.5 px-4 rounded-lg bg-slate-800 text-gray-200 hover:text-white font-semibold text-xs flex items-center justify-center gap-2 border border-slate-700 transition-colors">
+                            <i class="fa-solid fa-terminal"></i> Run macOS 1-Liner
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-6 flex flex-col justify-between hover:border-slate-700 transition-all">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-bold text-lg text-white flex items-center gap-2">
+                                    <i class="fa-brands fa-linux text-yellow-400"></i> Linux
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-400 mb-6">Ubuntu, Debian, Fedora, Arch & WSL2 · v1.4.1</p>
+                        </div>
+                        <button onclick="setMode('oneliner'); setModeOs('unix')" class="w-full py-2.5 px-4 rounded-lg bg-slate-800 text-gray-200 hover:text-white font-semibold text-xs flex items-center justify-center gap-2 border border-slate-700 transition-colors">
+                            <i class="fa-solid fa-terminal"></i> Run Linux 1-Liner
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: 1-Liner Scripts -->
+            <div id="content-oneliner" class="hidden space-y-4">
+                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-gray-500 mb-1 font-mono"># Windows PowerShell 1-Liner:</div>
+                        <code class="text-emerald-400 font-mono text-sm break-all" id="win-code">irm https://raw.githubusercontent.com/raghavkhandal72-coder/sentinel-autogen-hunter/main/install.ps1 | iex</code>
+                    </div>
+                    <button onclick="copyCode('win-code')" class="p-2 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center gap-1.5 text-xs font-mono ml-4">
+                        <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy</span>
+                    </button>
+                </div>
+
+                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-gray-500 mb-1 font-mono"># macOS & Linux Bash 1-Liner:</div>
+                        <code class="text-cyan-400 font-mono text-sm break-all" id="unix-code">curl -fsSL https://raw.githubusercontent.com/raghavkhandal72-coder/sentinel-autogen-hunter/main/install.sh | bash</code>
+                    </div>
+                    <button onclick="copyCode('unix-code')" class="p-2 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center gap-1.5 text-xs font-mono ml-4">
+                        <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 3: GitHub Packages (5 Registries) -->
+            <div id="content-packages" class="hidden space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-white text-xs flex items-center gap-1.5">
+                                    <i class="fa-brands fa-docker text-cyan-400"></i> Docker Container (GHCR)
+                                </span>
+                                <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded font-mono">ghcr.io</span>
+                            </div>
+                            <code class="text-emerald-400 font-mono text-xs block bg-slate-900 p-2 rounded break-all" id="pkg-docker">docker pull ghcr.io/raghavkhandal72-coder/sentinel-autogen-hunter:latest</code>
+                        </div>
+                        <button onclick="copyCode('pkg-docker')" class="mt-3 py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center justify-center gap-1.5 text-xs font-mono">
+                            <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy Docker Pull</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-white text-xs flex items-center gap-1.5">
+                                    <i class="fa-brands fa-npm text-red-400"></i> npm Package &amp; CLI
+                                </span>
+                                <span class="text-[10px] bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded font-mono">Node.js</span>
+                            </div>
+                            <code class="text-emerald-400 font-mono text-xs block bg-slate-900 p-2 rounded break-all" id="pkg-npm">npm install @raghavkhandal72-coder/sentinel-autogen-hunter</code>
+                        </div>
+                        <button onclick="copyCode('pkg-npm')" class="mt-3 py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center justify-center gap-1.5 text-xs font-mono">
+                            <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy npm Install</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-white text-xs flex items-center gap-1.5">
+                                    <i class="fa-brands fa-microsoft text-blue-400"></i> NuGet (.NET)
+                                </span>
+                                <span class="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded font-mono">C# / .NET</span>
+                            </div>
+                            <code class="text-emerald-400 font-mono text-xs block bg-slate-900 p-2 rounded break-all" id="pkg-nuget">dotnet add package Sentinel.AutoGen.Hunter</code>
+                        </div>
+                        <button onclick="copyCode('pkg-nuget')" class="mt-3 py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center justify-center gap-1.5 text-xs font-mono">
+                            <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy dotnet Add</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-white text-xs flex items-center gap-1.5">
+                                    <i class="fa-brands fa-java text-orange-400"></i> Apache Maven (Java)
+                                </span>
+                                <span class="text-[10px] bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded font-mono">Java 11+</span>
+                            </div>
+                            <code class="text-emerald-400 font-mono text-xs block bg-slate-900 p-2 rounded break-all" id="pkg-maven">mvn dependency:get -Dartifact=com.sentinel.hunter:sentinel-autogen-hunter:1.4.1</code>
+                        </div>
+                        <button onclick="copyCode('pkg-maven')" class="mt-3 py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center justify-center gap-1.5 text-xs font-mono">
+                            <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy Maven Command</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-gray-500 mb-1 font-mono flex items-center gap-2">
+                            <i class="fa-regular fa-gem text-rose-400"></i> RubyGems Registry:
+                        </div>
+                        <code class="text-rose-300 font-mono text-xs" id="pkg-gem">gem install sentinel-autogen-hunter --source https://rubygems.pkg.github.com/raghavkhandal72-coder</code>
+                    </div>
+                    <button onclick="copyCode('pkg-gem')" class="p-2 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center gap-1.5 text-xs font-mono">
+                        <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 4: pip -->
+            <div id="content-pip" class="hidden space-y-4">
+                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-gray-500 mb-1 font-mono"># Install directly from GitHub:</div>
+                        <code class="text-emerald-400 font-mono text-sm" id="pip-code">pip install -U git+https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter.git</code>
+                    </div>
+                    <button onclick="copyCode('pip-code')" class="p-2 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center gap-1.5 text-xs font-mono">
+                        <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 5: Source / Git -->
+            <div id="content-hackable" class="hidden space-y-4">
+                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 relative">
+                    <button onclick="copyCode('git-code')" class="absolute top-3 right-3 p-2 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center gap-1.5 text-xs font-mono">
+                        <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy</span>
+                    </button>
+                    <pre class="text-gray-300 font-mono text-sm leading-relaxed" id="git-code"><span class="text-emerald-400">git</span> clone https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter.git
+<span class="text-emerald-400">cd</span> sentinel-autogen-hunter
+<span class="text-emerald-400">pip</span> install -e .
+<span class="text-cyan-400">python</span> -m cli.main run</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture & Pillars -->
+        <div id="features" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div class="cyber-card p-6 rounded-xl">
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h3 class="text-white font-bold text-base mb-2">AutoGen Multi-Agent Swarm</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Collaborative AI agents (Network Analyzer, Threat Intel, Auditor, and Remediation Worker) that arbitrate consensus before triggering zero-trust network isolation.
+                </p>
+            </div>
+
+            <div class="cyber-card p-6 rounded-xl">
+                <div class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-code-compare"></i>
+                </div>
+                <h3 class="text-white font-bold text-base mb-2">Universal Multi-SIEM Transpiler</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Instant transpilation of Sigma detection rules into native Microsoft Sentinel KQL, Splunk SPL, and Elastic ES|QL queries.
+                </p>
+            </div>
+
+            <div class="cyber-card p-6 rounded-xl">
+                <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-shield-virus"></i>
+                </div>
+                <h3 class="text-white font-bold text-base mb-2">Active Honeytoken Deception</h3>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Automated deployment of AWS, GitHub, and SSH decoy credentials. Any unauthorized access triggers instant zero-trust containment.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 bg-slate-950 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+            <div>
+                © 2026 Sentinel-AutoGen-Hunter. Engineered with pride by <a href="https://github.com/raghavkhandal72-coder" class="text-emerald-400 hover:underline">Raghav Khandal</a>. Released under the MIT License.
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter" class="hover:text-gray-300">GitHub Repository</a>
+                <a href="https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/packages" class="hover:text-gray-300">GitHub Packages</a>
+                <a href="https://raghavkhandal72-coder.github.io/sentinel-autogen-hunter/sitemap.xml" class="hover:text-gray-300">Sitemap</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function setMode(mode) {
+            ['apps', 'oneliner', 'packages', 'pip', 'hackable'].forEach(m => {
+                const tab = document.getElementById('tab-' + m);
+                const content = document.getElementById('content-' + m);
+                if (m === mode) {
+                    tab.classList.add('active-tab');
+                    content.classList.remove('hidden');
+                } else {
+                    tab.classList.remove('active-tab');
+                    content.classList.add('hidden');
+                }
+            });
+        }
+
+        function copyCode(elementId) {
+            const el = document.getElementById(elementId);
+            const text = el.innerText || el.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.currentTarget;
+                const copyText = btn.querySelector('.copy-text');
+                const icon = btn.querySelector('i');
+                if (copyText) copyText.innerText = 'Copied!';
+                if (icon) icon.className = 'fa-solid fa-check text-emerald-400';
+                setTimeout(() => {
+                    if (copyText) copyText.innerText = 'Copy';
+                    if (icon) icon.className = 'fa-regular fa-copy';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

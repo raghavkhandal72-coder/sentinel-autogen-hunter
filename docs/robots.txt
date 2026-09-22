@@ -1,0 +1,9 @@
+# Robots.txt for Sentinel-AutoGen-Hunter GitHub Pages
+User-agent: *
+Allow: /
+
+# Fast crawl delay
+Crawl-delay: 1
+
+# Sitemap declaration for Googlebot and Bingbot
+Sitemap: https://raghavkhandal72-coder.github.io/sentinel-autogen-hunter/sitemap.xml
