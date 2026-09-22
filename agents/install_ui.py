@@ -104,6 +104,9 @@ INSTALL_HTML = """<!DOCTYPE html>
                     <button onclick="setMode('oneliner')" id="tab-oneliner" class="px-4 py-2 rounded-lg text-sm font-semibold border border-transparent text-gray-400 hover:text-white transition-all">
                         <i class="fa-solid fa-terminal mr-1.5"></i> One-Liner
                     </button>
+                    <button onclick="setMode('packages')" id="tab-packages" class="px-4 py-2 rounded-lg text-sm font-semibold border border-transparent text-gray-400 hover:text-white transition-all">
+                        <i class="fa-solid fa-box-archive mr-1.5"></i> GitHub Packages
+                    </button>
                     <button onclick="setMode('pip')" id="tab-pip" class="px-4 py-2 rounded-lg text-sm font-semibold border border-transparent text-gray-400 hover:text-white transition-all">
                         <i class="fa-brands fa-python mr-1.5"></i> pip
                     </button>
@@ -262,6 +265,92 @@ INSTALL_HTML = """<!DOCTYPE html>
 <span class="text-cyan-400">python</span> companion.py</pre>
                 </div>
             </div>
+
+            <!-- MODE 5: GitHub Packages Content (All 5 Registries) -->
+            <div id="content-packages" class="hidden space-y-4">
+                <div class="text-sm text-gray-400 mb-2">
+                    Official enterprise packages published directly to GitHub Packages across 5 supported developer ecosystems:
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Containers (GHCR) -->
+                    <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-white text-xs flex items-center gap-1.5">
+                                    <i class="fa-brands fa-docker text-cyan-400"></i> Containers (GHCR)
+                                </span>
+                                <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded font-mono">ghcr.io</span>
+                            </div>
+                            <code class="text-emerald-400 font-mono text-xs block bg-slate-900 p-2 rounded break-all" id="ghcr-code">docker pull ghcr.io/raghavkhandal72-coder/sentinel-autogen-hunter:latest</code>
+                        </div>
+                        <button onclick="copyCode('ghcr-code')" class="mt-3 py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center justify-center gap-1.5 text-xs font-mono">
+                            <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy Pull Command</span>
+                        </button>
+                    </div>
+
+                    <!-- npm Package -->
+                    <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-white text-xs flex items-center gap-1.5">
+                                    <i class="fa-brands fa-npm text-red-400"></i> npm Package & CLI
+                                </span>
+                                <span class="text-[10px] bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded font-mono">Node.js</span>
+                            </div>
+                            <code class="text-emerald-400 font-mono text-xs block bg-slate-900 p-2 rounded break-all" id="npm-code">npm install @raghavkhandal72-coder/sentinel-autogen-hunter</code>
+                        </div>
+                        <button onclick="copyCode('npm-code')" class="mt-3 py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center justify-center gap-1.5 text-xs font-mono">
+                            <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy npm Install</span>
+                        </button>
+                    </div>
+
+                    <!-- NuGet Package (.NET) -->
+                    <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-white text-xs flex items-center gap-1.5">
+                                    <i class="fa-brands fa-microsoft text-blue-400"></i> NuGet (.NET)
+                                </span>
+                                <span class="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded font-mono">C# / .NET 8</span>
+                            </div>
+                            <code class="text-emerald-400 font-mono text-xs block bg-slate-900 p-2 rounded break-all" id="nuget-code">dotnet add package Sentinel.AutoGen.Hunter</code>
+                        </div>
+                        <button onclick="copyCode('nuget-code')" class="mt-3 py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center justify-center gap-1.5 text-xs font-mono">
+                            <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy dotnet Add</span>
+                        </button>
+                    </div>
+
+                    <!-- Apache Maven (Java) -->
+                    <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-white text-xs flex items-center gap-1.5">
+                                    <i class="fa-brands fa-java text-orange-400"></i> Apache Maven (Java)
+                                </span>
+                                <span class="text-[10px] bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded font-mono">Java 11+</span>
+                            </div>
+                            <code class="text-emerald-400 font-mono text-xs block bg-slate-900 p-2 rounded break-all" id="mvn-code">mvn dependency:get -Dartifact=com.sentinel.hunter:sentinel-autogen-hunter:1.4.1</code>
+                        </div>
+                        <button onclick="copyCode('mvn-code')" class="mt-3 py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center justify-center gap-1.5 text-xs font-mono">
+                            <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy Maven Command</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RubyGems Bar -->
+                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-gray-500 mb-1 font-mono flex items-center gap-2">
+                            <i class="fa-regular fa-gem text-rose-400"></i> RubyGems Registry:
+                        </div>
+                        <code class="text-rose-300 font-mono text-xs" id="gem-code">gem install sentinel-autogen-hunter --source https://rubygems.pkg.github.com/raghavkhandal72-coder</code>
+                    </div>
+                    <button onclick="copyCode('gem-code')" class="p-2 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center gap-1.5 text-xs font-mono">
+                        <i class="fa-regular fa-copy"></i> <span class="copy-text">Copy</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Zero-Trust Architecture Highlights Grid -->
@@ -308,7 +397,7 @@ INSTALL_HTML = """<!DOCTYPE html>
     <!-- Client-side tab & copy handler -->
     <script>
         function setMode(mode) {
-            ['apps', 'oneliner', 'pip', 'hackable'].forEach(m => {
+            ['apps', 'oneliner', 'packages', 'pip', 'hackable'].forEach(m => {
                 const tab = document.getElementById('tab-' + m);
                 const content = document.getElementById('content-' + m);
                 if (m === mode) {

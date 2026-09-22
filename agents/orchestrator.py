@@ -26,10 +26,10 @@ except ImportError:
     HAS_PROMETHEUS = False
 
     class MetricMock:
-        def __init__(self, name, description, labels=None):
+        def __init__(self, name, description, labelnames=None, labels=None):
             self.name = name
             self.description = description
-            self.labels_keys = labels or []
+            self.labels_keys = labelnames or labels or []
             self.value = 0.0
 
         def inc(self, amount=1.0):
@@ -47,7 +47,7 @@ except ImportError:
 THREATS_DETECTED = Counter(
     "ai_threats_detected_total",
     "Total confirmed malicious threats classified by AI",
-    labels=["threat_type", "risk_level"],
+    labelnames=["threat_type", "risk_level"],
 )
 AI_CONFIDENCE = Gauge(
     "ai_threat_confidence_score",
@@ -59,7 +59,7 @@ LOGIN_ATTEMPTS = Counter(
 REMEDIATIONS_QUEUED = Counter(
     "threat_remediations_queued_total",
     "Total autonomous host firewall rules dispatched to DOCKER-USER chain",
-    labels=["status"],
+    labelnames=["status"],
 )
 
 # Initialize FastAPI application

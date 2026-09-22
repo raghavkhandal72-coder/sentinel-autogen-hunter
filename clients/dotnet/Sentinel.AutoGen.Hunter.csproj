@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Sentinel.AutoGen.Hunter</PackageId>
+    <Version>1.4.1</Version>
+    <Authors>Raghav Khandal</Authors>
+    <Company>Sentinel Cyber Threat Swarm</Company>
+    <Description>Enterprise C# / .NET SDK client for Sentinel-AutoGen-Hunter Threat Orchestration &amp; Deception Gateway.</Description>
+    <PackageProjectUrl>https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>cybersecurity;sentinel;autogen;threat-hunting;deception;ai-agents</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

@@ -9,7 +9,7 @@
 [![Multi-SIEM Sigma](https://img.shields.io/badge/Sigma%20Standard-KQL%20%7C%20SPL%20%7C%20ES%7CQL-blueviolet?style=for-the-badge&logo=siem)](https://github.com/SigmaHQ/sigma)
 [![Active Deception](https://img.shields.io/badge/Active%20Deception-Canary%20Tripwires-orange?style=for-the-badge&logo=shield)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter)
 [![Cyber SOC UI](https://img.shields.io/badge/Console-Cyber%20SOC%20Dashboard-00ff88?style=for-the-badge)](http://localhost:8000/dashboard)
-[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Containers%20%7C%20npm-blue?style=for-the-badge&logo=github)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/packages)
+[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-GHCR%20%7C%20npm%20%7C%20NuGet%20%7C%20Maven%20%7C%20Ruby-blue?style=for-the-badge&logo=github)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/packages)
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?style=for-the-badge&logo=python)](https://python.org)
 [![Zero-Trust](https://img.shields.io/badge/architecture-zero--trust-red?style=for-the-badge&logo=securityscorecard)](https://csrc.nist.gov/publications/detail/sp/800-207/final)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)](LICENSE)
@@ -60,9 +60,17 @@
 
 ---
 
-## 📦 GitHub Packages Registry (Containers & npm)
+## 📦 GitHub Packages Ecosystem (Containers, npm, NuGet, Maven, RubyGems)
 
-> **Official enterprise container images and Node.js client packages hosted on GitHub Packages.**
+> **Official enterprise packages and client SDKs published directly to GitHub Packages across 5 supported developer ecosystems.**
+
+| Registry | Ecosystem | Package / Coordinate | Install / Pull Command |
+| :--- | :--- | :--- | :--- |
+| **🐳 Containers** | Docker / OCI (GHCR) | `ghcr.io/raghavkhandal72-coder/sentinel-autogen-hunter` | `docker pull ghcr.io/raghavkhandal72-coder/sentinel-autogen-hunter:latest` |
+| **🔴 npm** | Node.js / TypeScript | `@raghavkhandal72-coder/sentinel-autogen-hunter` | `npm install @raghavkhandal72-coder/sentinel-autogen-hunter` |
+| **🔷 NuGet** | .NET / C# | `Sentinel.AutoGen.Hunter` | `dotnet add package Sentinel.AutoGen.Hunter --source https://nuget.pkg.github.com/raghavkhandal72-coder/index.json` |
+| **☕ Apache Maven**| Java / JVM | `com.sentinel.hunter:sentinel-autogen-hunter:1.4.1` | `mvn dependency:get -Dartifact=com.sentinel.hunter:sentinel-autogen-hunter:1.4.1` |
+| **💎 RubyGems** | Ruby | `sentinel-autogen-hunter` | `gem install sentinel-autogen-hunter --source https://rubygems.pkg.github.com/raghavkhandal72-coder` |
 
 ### 🐳 1. Containers (GitHub Container Registry - GHCR)
 The complete Threat Orchestrator and OpenClaw Gateway are available as a multi-arch, zero-trust hardened container image:
@@ -95,6 +103,39 @@ import { SentinelClient } from '@raghavkhandal72-coder/sentinel-autogen-hunter';
 const client = new SentinelClient({ baseUrl: 'http://localhost:8000' });
 const status = await client.getGatewayStatus();
 console.log('OpenClaw Gateway & Sentinel Swarm:', status.status);
+```
+
+### 🔷 3. NuGet Registry (.NET / C#)
+Integrate autonomous threat detection directly into .NET applications and microservices:
+
+```bash
+dotnet add package Sentinel.AutoGen.Hunter --source https://nuget.pkg.github.com/raghavkhandal72-coder/index.json
+```
+
+```csharp
+using Sentinel.AutoGen.Hunter;
+
+var client = new SentinelClient("http://localhost:8000");
+var health = await client.GetHealthAsync();
+Console.WriteLine($"Sentinel Health: {health}");
+```
+
+### ☕ 4. Apache Maven (Java)
+Enterprise Java applications can declare Sentinel in their `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>com.sentinel.hunter</groupId>
+  <artifactId>sentinel-autogen-hunter</artifactId>
+  <version>1.4.1</version>
+</dependency>
+```
+
+### 💎 5. RubyGems (Ruby)
+Ruby developers and security automation scripts can install the gem:
+
+```bash
+gem install sentinel-autogen-hunter --source https://rubygems.pkg.github.com/raghavkhandal72-coder
 ```
 
 ---

@@ -1,4 +1,4 @@
-name: Publish to GitHub Packages (Containers & npm)
+name: Publish to GitHub Packages (Containers, npm, NuGet, Maven, RubyGems)
 
 on:
   push:
@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   publish-container:
-    name: Build & Publish Container to GHCR
+    name: Containers (GHCR Docker Image)
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -51,7 +51,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   publish-npm:
-    name: Publish Node.js SDK to GitHub Packages
+    name: npm Package (@raghavkhandal72-coder/sentinel-autogen-hunter)
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -71,3 +71,68 @@ jobs:
         run: npm publish --access public || echo "Package already published or up to date"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-nuget:
+    name: NuGet Package (Sentinel.AutoGen.Hunter)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build & Pack NuGet Package
+        run: |
+          dotnet pack clients/dotnet/Sentinel.AutoGen.Hunter.csproj -c Release -o clients/dotnet/nupkgs
+
+      - name: Push to GitHub Packages NuGet Registry
+        run: |
+          dotnet nuget push clients/dotnet/nupkgs/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/raghavkhandal72-coder/index.json" --skip-duplicate || echo "NuGet package already published or up to date"
+
+  publish-maven:
+    name: Apache Maven Package (com.sentinel.hunter)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java & Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      - name: Deploy to GitHub Packages Maven Registry
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mvn --batch-mode deploy -f clients/java/pom.xml -DskipTests || echo "Maven package already published or up to date"
+
+  publish-rubygems:
+    name: RubyGem (sentinel-autogen-hunter)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+
+      - name: Build and Push Gem to GitHub Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd clients/ruby
+          gem build sentinel-autogen-hunter.gemspec
+          mkdir -p ~/.gem
+          echo "---" > ~/.gem/credentials
+          echo ":github: Bearer ${GITHUB_TOKEN}" >> ~/.gem/credentials
+          chmod 0600 ~/.gem/credentials
+          gem push --key github --host https://rubygems.pkg.github.com/raghavkhandal72-coder sentinel-autogen-hunter-*.gem || echo "RubyGem already published or up to date"

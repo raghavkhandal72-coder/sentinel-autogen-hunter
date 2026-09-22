@@ -1,11 +1,20 @@
 """Tests for Sentinel Windows Companion Desktop Application."""
 
 import pytest
-from gui.companion_app import SentinelWindowsCompanion
 
 
 def test_companion_app_initialization():
     """Validates that the Sentinel Windows Companion initializes all UI tabs without crashing."""
+    try:
+        import tkinter
+        # Test if a display server is active
+        root = tkinter.Tk()
+        root.destroy()
+    except Exception as exc:
+        pytest.skip(f"Skipping GUI test on headless environment without display: {exc}")
+
+    from gui.companion_app import SentinelWindowsCompanion
+
     app = SentinelWindowsCompanion()
     try:
         assert app.title() == "Sentinel Windows Companion"
