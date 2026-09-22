@@ -9,6 +9,7 @@
 [![Multi-SIEM Sigma](https://img.shields.io/badge/Sigma%20Standard-KQL%20%7C%20SPL%20%7C%20ES%7CQL-blueviolet?style=for-the-badge&logo=siem)](https://github.com/SigmaHQ/sigma)
 [![Active Deception](https://img.shields.io/badge/Active%20Deception-Canary%20Tripwires-orange?style=for-the-badge&logo=shield)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter)
 [![Cyber SOC UI](https://img.shields.io/badge/Console-Cyber%20SOC%20Dashboard-00ff88?style=for-the-badge)](http://localhost:8000/dashboard)
+[![Live Web Portal](https://img.shields.io/badge/Live%20Website-GitHub%20Pages-brightgreen?style=for-the-badge&logo=googlechrome&logoColor=white)](https://raghavkhandal72-coder.github.io/sentinel-autogen-hunter/)
 [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-GHCR%20%7C%20npm%20%7C%20NuGet%20%7C%20Maven%20%7C%20Ruby-blue?style=for-the-badge&logo=github)](https://github.com/raghavkhandal72-coder/sentinel-autogen-hunter/packages)
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?style=for-the-badge&logo=python)](https://python.org)
 [![Zero-Trust](https://img.shields.io/badge/architecture-zero--trust-red?style=for-the-badge&logo=securityscorecard)](https://csrc.nist.gov/publications/detail/sp/800-207/final)
